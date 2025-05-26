@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
 
     <!-- Css link -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 
     <title>CineFlix - Login page</title>
 </head>
@@ -23,25 +23,25 @@
 
     <!-- Main ( Parte principal )-->
     <main class="container d-flex justify-content-center align-items-center">
-        <div class="card-container d-flex">
+        <div class="card-container d-flex" id="mainLogin">
             <!-- Cards com class "redirection" vai fazer aparecer seu respectivo card, por js ou php -->
 
             <!-- Redirection cards login e register -->
              <!-- section com display none, "redireciona" para register -->
-            <section class="card-redirection card-login-redirection d-none" id="redirection-login"> 
+            <section class="card-redirection card-login-redirection d-none" id="card-registerAside"> 
                 <h2>Bem vindo ao</h2>
                 <h1>Cine<span>Flix</span></h1> <!-- Span para alterar a cor da letra -->
 
                 <p>Já tem uma conta?</p>
-                <button class="btn btn-black btn-custom">Fazer login</button>
+                <button class="btn btn-black btn-custom" id="btn-redirection-login">Fazer login</button>
             </section> 
 
-            <section class="card-redirection card-register-redirection" id="redirection-register">
+            <section class="card-redirection card-register-redirection" id="card-loginAside">
                 <h2>Bem vindo de volta ao</h2>
                 <h1>Cine<span>Flix</span></h1> <!-- Span para alterar a cor da letra -->
 
                 <p>Ainda não tem uma conta?</p>
-                <button class="btn btn-black btn-custom">Criar conta</button>
+                <button class="btn btn-black btn-custom" id="btn-redirection-register">Criar conta</button>
             </section> 
 
             <!-- Card do login -->
@@ -74,10 +74,15 @@
              <!-- section com display none, register -->
             <section class="card-form card-register d-none" id="card-register">
                 <!-- Tituo principal -->
-                <h1 class="uppercase">Cadastrar</h1>
+                <h1 class="uppercase">Cadastro</h1>
 
                 <!-- Formulário -->
                 <form method="post" class="d-flex flex-column">
+                    <!-- Input usuario -->
+                    <div class="input-container">
+                        <label for="user">Usuário</label>
+                        <input type="text" name="user" class="input custom-input-loginAndRegister" id="email_input_login" required>
+                    </div>
                     <!-- Input email -->
                     <div class="input-container">
                         <label for="email">Email</label>
@@ -92,7 +97,7 @@
                     <a href="#">Já tem uma conta?</a>
 
                     <!-- Input para Entrar / Enviar dados -->
-                    <input type="submit" value="CADASTR " class="input-submit">
+                    <input type="submit" value="CADASTRAR" class="input-submit">
                 </form>
 
             </section>
@@ -107,5 +112,6 @@
 
     <!-- Srcipt bootstrap -->
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+     <script src="js/script.js"></script>
 </body>
 </html>
