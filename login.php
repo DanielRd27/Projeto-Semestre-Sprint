@@ -85,8 +85,8 @@
                         <form method="post" class="d-flex flex-column">
                             <!-- Input email -->
                             <div class="input-container">
-                                <label for="email">Email</label>
-                                <input type="email" name="email" class="input custom-input-loginAndRegister" id="email_input_login" required>
+                                <label for="user">Usuário</label>
+                                <input type="text" name="user" class="input custom-input-loginAndRegister" id="user_input_login" required>
                             </div>
                             <!-- Input senha -->
                             <div class="input-container">
