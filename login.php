@@ -23,84 +23,86 @@
 
     <!-- Main ( Parte principal )-->
     <main class="container d-flex justify-content-center align-items-center">
-        <div class="card-container d-flex" id="mainLogin">
-            <!-- Cards com class "redirection" vai fazer aparecer seu respectivo card, por js ou php -->
+        <div class="container-pai">
+            <div class="card-container loginActive d-flex" id="mainCard">
+                <!-- Cards com class "redirection" vai fazer aparecer seu respectivo card, por js ou php -->
+                <div class="esquerda">
+                    <section class="card-redirection card-register-redirection esquerda-card" id="card-loginAside">
+                        <h2>Bem vindo de volta ao</h2>
+                        <h1>Cine<span>Flix</span></h1> <!-- Span para alterar a cor da letra -->
 
-            <!-- Redirection cards login e register -->
-             <!-- section com display none, "redireciona" para register -->
-            <section class="card-redirection card-login-redirection d-none" id="card-registerAside"> 
-                <h2>Bem vindo ao</h2>
-                <h1>Cine<span>Flix</span></h1> <!-- Span para alterar a cor da letra -->
+                        <p>Ainda não tem uma conta?</p>
+                        <button class="btn btn-black btn-custom" id="btn-redirection-register">Criar conta</button>
+                    </section> 
 
-                <p>Já tem uma conta?</p>
-                <button class="btn btn-black btn-custom" id="btn-redirection-login">Fazer login</button>
-            </section> 
+                    <!-- Card de register -->
+                    <!-- section com display none, register -->
+                    <section class="card-form card-register esquerda-card" id="card-register">
+                        <!-- Tituo principal -->
+                        <h1 class="uppercase">Cadastro</h1>
 
-            <section class="card-redirection card-register-redirection" id="card-loginAside">
-                <h2>Bem vindo de volta ao</h2>
-                <h1>Cine<span>Flix</span></h1> <!-- Span para alterar a cor da letra -->
+                        <!-- Formulário -->
+                        <form method="post" class="d-flex flex-column">
+                            <!-- Input usuario -->
+                            <div class="input-container">
+                                <label for="user">Usuário</label>
+                                <input type="text" name="user" class="input custom-input-loginAndRegister" id="email_input_login" required>
+                            </div>
+                            <!-- Input email -->
+                            <div class="input-container">
+                                <label for="email">Email</label>
+                                <input type="email" name="email" class="input custom-input-loginAndRegister" id="email_input_login" required>
+                            </div>
+                            <!-- Input senha -->
+                            <div class="input-container">
+                                <label for="senha">Senha</label>
+                                <input type="password" name="senha" class="input custom-input-loginAndRegister" id="password_input_login" required>
+                            </div>
 
-                <p>Ainda não tem uma conta?</p>
-                <button class="btn btn-black btn-custom" id="btn-redirection-register">Criar conta</button>
-            </section> 
+                            <a href="#">Já tem uma conta?</a>
 
-            <!-- Card do login -->
-            <section class="card-form card-login" id="card-login">
-                <!-- Tittle principal -->
-                <h1 class="uppercase">Entrar</h1>
+                            <!-- Input para Entrar / Enviar dados -->
+                            <input type="submit" value="CADASTRAR" class="input-submit">
+                        </form>
 
-                <!-- Formulário -->
-                <form method="post" class="d-flex flex-column">
-                    <!-- Input email -->
-                    <div class="input-container">
-                        <label for="email">Email</label>
-                        <input type="email" name="email" class="input custom-input-loginAndRegister" id="email_input_login" required>
-                    </div>
-                    <!-- Input senha -->
-                    <div class="input-container">
-                        <label for="senha">Senha</label>
-                        <input type="password" name="senha" class="input custom-input-loginAndRegister" id="password_input_login" required>
-                    </div>
+                    </section>
+                </div>
+                <div class="direita">
+                    <!-- Redirection cards login e register -->
+                    <!-- section com display none, "redireciona" para register -->
+                    <section class="card-redirection card-login-redirection direita-card" id="card-registerAside"> 
+                        <h2>Bem vindo ao</h2>
+                        <h1>Cine<span>Flix</span></h1> <!-- Span para alterar a cor da letra -->
 
-                    <a href="#">Ainda não tem conta?</a>
+                        <p>Já tem uma conta?</p>
+                        <button class="btn btn-black btn-custom" id="btn-redirection-login">Fazer login</button>
+                    </section> 
+                    <section class="card-form card-login direita-card" id="card-login">
+                        <!-- Tittle principal -->
+                        <h1 class="uppercase">Entrar</h1>
 
-                    <!-- Input para Entrar / Enviar dados -->
-                    <input type="submit" value="ENTRAR" class="input-submit">
-                </form>
+                        <!-- Formulário -->
+                        <form method="post" class="d-flex flex-column">
+                            <!-- Input email -->
+                            <div class="input-container">
+                                <label for="email">Email</label>
+                                <input type="email" name="email" class="input custom-input-loginAndRegister" id="email_input_login" required>
+                            </div>
+                            <!-- Input senha -->
+                            <div class="input-container">
+                                <label for="senha">Senha</label>
+                                <input type="password" name="senha" class="input custom-input-loginAndRegister" id="password_input_login" required>
+                            </div>
 
-            </section>
+                            <a href="#">Ainda não tem conta?</a>
 
-            <!-- Card de register -->
-             <!-- section com display none, register -->
-            <section class="card-form card-register d-none" id="card-register">
-                <!-- Tituo principal -->
-                <h1 class="uppercase">Cadastro</h1>
+                            <!-- Input para Entrar / Enviar dados -->
+                            <input type="submit" value="ENTRAR" class="input-submit">
+                        </form>
 
-                <!-- Formulário -->
-                <form method="post" class="d-flex flex-column">
-                    <!-- Input usuario -->
-                    <div class="input-container">
-                        <label for="user">Usuário</label>
-                        <input type="text" name="user" class="input custom-input-loginAndRegister" id="email_input_login" required>
-                    </div>
-                    <!-- Input email -->
-                    <div class="input-container">
-                        <label for="email">Email</label>
-                        <input type="email" name="email" class="input custom-input-loginAndRegister" id="email_input_login" required>
-                    </div>
-                    <!-- Input senha -->
-                    <div class="input-container">
-                        <label for="senha">Senha</label>
-                        <input type="password" name="senha" class="input custom-input-loginAndRegister" id="password_input_login" required>
-                    </div>
-
-                    <a href="#">Já tem uma conta?</a>
-
-                    <!-- Input para Entrar / Enviar dados -->
-                    <input type="submit" value="CADASTRAR" class="input-submit">
-                </form>
-
-            </section>
+                    </section>
+                </div>
+            </div>
         </div>
     </main>
 

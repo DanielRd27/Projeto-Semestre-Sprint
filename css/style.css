@@ -31,10 +31,6 @@ main {
     height: 100%;
 }
 
-.card-container {
-    height: 70vh;
-}
-
 /* Header */
 
     .header-index {
@@ -86,10 +82,85 @@ main {
 /*        login.html e outros       */
 /* ================================ */
 
+    .esquerda-card {
+        border-radius: 20px 0px 0px 20px;
+        z-index: 1;
+    }
+
+    .direita-card {
+        border-radius: 0px 20px 20px 0px;
+        z-index: 1;    
+    }
+
+    .container-pai{
+        background-color: #262626;
+        max-height: 70vh;
+        border-radius: 20px;
+    }
+
+    .card-container {
+        width: 100%;
+        height: 70vh;
+        content: "";
+        background-color: #262626;
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+    }
+
+
+    .card-container::after {
+        position: absolute;
+        width: 100%;
+        height: 70vh;
+        content: "";
+        background-image: url("/assets/fundo-branco.png");
+        transform: translateX(-50%);
+        z-index: 0;
+        background-size: cover;
+    }
+
+    /* Login ativo */
+        
+        .card-container.loginActive .card-register {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .card-container.loginActive .card-login-redirection {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .card-container.loginActive::after {
+            transform: translateX(-50%);
+        }
+
+    /* Register ativo */
+        
+        .card-container.registerActive .card-login {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .card-container.registerActive .card-register-redirection {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .card-container.registerActive::after {
+            transform: translateX(50%);
+        }
+
+    /* Transitions */
+
+    .card-container::after {
+        transition: all 0.5s;
+    }
+
     /* Card de redirecionamento */
 
         .card-redirection {
-            background-color: #E1E1E1;
 
             /* Configuração flex  */
             display: flex;
@@ -98,7 +169,6 @@ main {
             flex-direction: column;
 
             width: 30vw;
-            border-radius: 20px 0px 0px 20px;
 
             color: #000000;
 
@@ -141,7 +211,6 @@ main {
     /* Card com forumlários */
 
         .card-form {
-            background-color: #262626;
 
             /* Configuração flex  */
             display: flex;
@@ -150,7 +219,6 @@ main {
             flex-direction: column;
 
             width: 30vw;
-            border-radius: 0px 20px 20px 0px;
 
             /* Cor da letra */
             color: #E1E1E1;
@@ -229,6 +297,14 @@ main {
             color: #ffffffc2;
         }
 
+        .card-login-redirection, .card-register-redirection, .card-login, .card-register{
+            min-height: 70vh;
+        }
+
+        .card-login-redirection, .card-register-redirection {
+            position: absolute;
+        }
+        
     /* Responsividade */
 
     @media (max-width: 980px) {
