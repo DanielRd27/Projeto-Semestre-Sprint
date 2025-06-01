@@ -114,7 +114,7 @@ main {
         width: 100%;
         height: 70vh;
         content: "";
-        background-image: url("/assets/fundo-branco.png");
+        background-image: url("../assets/fundo-branco.png");
         transform: translateX(-50%);
         z-index: 0;
         background-size: cover;
@@ -155,7 +155,7 @@ main {
     /* Transitions */
 
     .card-container::after {
-        transition: all 0.5s;
+        transition: all 0.7s;
     }
 
     /* Card de redirecionamento */
@@ -210,9 +210,14 @@ main {
 
     /* Card com forumlários */
 
+        form {
+            max-height: 70%;
+        }
+
         .card-form {
 
             /* Configuração flex  */
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -245,9 +250,9 @@ main {
             margin-top: 6px;
             margin-bottom: 15px;
 
-            border-radius: 2px;
+            border-radius: 5px;
             width: 100%;
-            height: 2rem;
+            height: 3rem;
 
             color: white;
 
@@ -315,10 +320,6 @@ main {
         .card-login, .card-register {
             border-radius: 10px;
             width: 100%;
-        }
-
-        .card-container {
-            width: 70%;
         }
     }
 
