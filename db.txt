@@ -1,0 +1,42 @@
+usuários
+	id
+	user
+	senha
+	email
+	perfil
+
+alugados
+	id
+	titulo
+	item_id
+	tipo
+
+filmes
+	id
+	imagem
+	título
+	sinopse
+	ano de lançamento
+	gêneros
+	duração(tempo de filme em minutos)
+	preço
+	disponível
+
+series
+	id
+	imagem
+	título
+	sinopse
+	gêneros
+	preço
+	disponível
+
+temporada
+	id
+	título
+	serie_id
+
+episódios
+	id
+	título
+	temporada_id

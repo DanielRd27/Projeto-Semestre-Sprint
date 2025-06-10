@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Liter&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Holtwood+One+SC&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Liter&display=swap');
 
 * {
     margin: 0;
@@ -427,3 +428,84 @@ main {
             display: flex;
             gap: 0.5rem;
         }
+
+
+
+
+/* 
+  =====================================
+==========================================
+
+                Sprint 2                  
+            Segunda parte css
+            
+==========================================
+  ======================================
+*/
+
+/* Sliders */
+
+.sliderMovies {
+    position: relative;
+    margin-bottom: 15rem;
+    display: flex;
+    gap: 5rem;
+}
+
+.itemSlider{
+    width: 180px;
+    height: 270px;
+    transition: 0.5s;   
+    color: white;
+    transition: 1s;
+}
+
+.hover {
+    padding: 0.5rem;
+    top: 0;
+    opacity: 0;
+    transition: 1s;
+
+    font-size: 0.5rem;
+
+    width: 180px;
+    height: 270px;
+}
+
+.hover h1{
+    margin-top: 2rem;
+    font-size: 1.5rem;
+    font-family: "Holtwood One SC", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.priceHover {
+    color: #00C8FF;
+}
+
+.imgSlider {
+    position: absolute;
+    width: 180px;   
+    height: auto;
+    transition: 1s;
+
+    z-index: -1;
+}
+
+.itemSlider:hover {
+    height: 400px;
+    width: 250px;
+    background: linear-gradient(to bottom, transparent 0%, black 60%, black 100%);
+
+    img {
+        width: 250px;
+    }
+
+   
+} 
+
+#containerMainPage {
+    display: flex;
+    flex-direction: column;
+}
