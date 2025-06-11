@@ -27,6 +27,7 @@ series
 	imagem
 	título
 	sinopse
+	ano de lançamento
 	gêneros
 	preço
 	disponível
