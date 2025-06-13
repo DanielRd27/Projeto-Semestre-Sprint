@@ -87,10 +87,3 @@ CREATE TABLE IF NOT EXISTS episodio (
 INSERT INTO usuario (username, password, perfil) VALUES 
     ('admin', '$2y$10$4gAzJ/Kq4NFc.K3nXi.l0OQsRHxqZJ8/Z2MtMrjorJX66IvPZOOym', 'admin'),
     ('usuario', '$2y$10$reDVMnCMBItvD.Ru13M/Heqn0K5C3t8cL7.jxvAfLk1xEFXbqB9HG', 'usuario');
-
--- Insere veículos padrão para demonstração
-INSERT INTO veiculos (tipo, modelo, placa, disponivel) VALUES 
-    ('Carro', 'Sandero', 'FMA-6680', FALSE),
-    ('Moto', 'Ninja', 'FMA-6600', TRUE),
-    ('Carro', 'Onix', 'ABC-1234', TRUE),
-    ('Moto', 'Honda CB 500', 'DEF-5678', TRUE);
