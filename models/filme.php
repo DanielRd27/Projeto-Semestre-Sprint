@@ -1,6 +1,7 @@
 <?php
 
-require "../midia.php";
+require_once "../models/midia.php";
+
 
 class Filmes extends Midia {
     protected int $duracao_minutos;

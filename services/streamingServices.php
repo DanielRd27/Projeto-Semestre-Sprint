@@ -3,8 +3,8 @@
 
 require "../models/filme.php";
 require "../models/serie.php";
-require "../models/filmeAlugado.php";
-require "../models/serieAlugado.php";
+// require "../models/filmeAlugado.php";
+// require "../models/serieAlugado.php";
 require "../models/user.php";
 require "../config/connectDB.php";
 

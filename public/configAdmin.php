@@ -1,36 +1,45 @@
 <?php
+
+require "../services/streamingServices.php";
+
 $apiKey = '72872d046ca2baa1e585a796cd99ccda'; // <-- Substitua com sua API key real
 $resultados = [];
 
-if (isset($_GET['q']) && !empty(trim($_GET['q']))) {
-
-    $arquivosJson = glob('*.json');
-
-    foreach ($arquivosJson as $arquivo) {
-        if (is_file($arquivo)) {
-            unlink($arquivo);
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    if (isset($_GET['busca']) && !empty(trim($_GET['busca']))) {
+    
+        $arquivosJson = glob('*.json');
+    
+        foreach ($arquivosJson as $arquivo) {
+            if (is_file($arquivo)) {
+                unlink($arquivo);
+            }
+        }
+    
+        $query = urlencode($_GET['busca']);
+        $url = "https://api.themoviedb.org/3/search/movie?api_key=$apiKey&language=pt-BR&query=$query";
+    
+        $response = file_get_contents($url);
+        $data = json_decode($response, true);
+    
+        if (isset($data['results'])) {
+            foreach ($data['results'] as $filme) {
+                $resultados[] = [
+                'id' => $filme['id'],
+                'title' => $filme['title'],
+                'overview' => $filme['overview']
+            ];
+            }
+    
+            // Salva o JSON em arquivo local (opcional)
+            $nomeArquivo = 'resultado_' . preg_replace('/\W+/', '_', $_GET['busca']) . '.json';
+            file_put_contents($nomeArquivo, json_encode($resultados, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
         }
     }
+}
 
-    $query = urlencode($_GET['q']);
-    $url = "https://api.themoviedb.org/3/search/movie?api_key=$apiKey&language=pt-BR&query=$query";
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    $response = file_get_contents($url);
-    $data = json_decode($response, true);
-
-    if (isset($data['results'])) {
-        foreach ($data['results'] as $filme) {
-            $resultados[] = [
-            'id' => $filme['id'],
-            'title' => $filme['title'],
-            'overview' => $filme['overview']
-        ];
-        }
-
-        // Salva o JSON em arquivo local (opcional)
-        $nomeArquivo = 'resultado_' . preg_replace('/\W+/', '_', $_GET['q']) . '.json';
-        file_put_contents($nomeArquivo, json_encode($resultados, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
-    }
 }
 ?>
 
@@ -89,42 +98,76 @@ if (isset($_GET['q']) && !empty(trim($_GET['q']))) {
             
             <div class="forms d-flex justify-content-between">
                 <!-- Form 1 -->
-                <div class="card-form card-form-custom-index">
+                <div class="card-form card-form-custom-index mb-5">
                     <div class="tittle">
                         Adicionar Novo Item Ao Carrinho
                     </div>
         
                     <!-- Formulário -->
-                    <form method="get" class="d-flex flex-column">
-                        <!-- Input nome -->
-                        <div class="input-container">
-                            <!-- Sistema de pesquisa com DB -->
-                            <label for="name">Nome</label>
-                            <input name='q' class="input white" type="text" id="searchInput" placeholder="Digite para buscar..." required value="<?= htmlspecialchars($_GET['q'] ?? '') ?>">
-                            <!-- Input para Entrar / Enviar dados -->
-                        </div>
-                        <input type="submit" value="Buscar Item" class="input-submit">
+                    <div class="d-flex flex-column">
+                        <form method="get" class="d-flex flex-column">
+                            <!-- Input nome -->
+                            <div class="input-container">
+                                <!-- Sistema de pesquisa com DB -->
+                                <label for="name">Nome</label>
+                                <input name='busca' class="input white" type="text" id="searchInput" placeholder="Digite para buscar..." required value="<?= htmlspecialchars($_GET['busca'] ?? '') ?>">
+                                <!-- Input para Entrar / Enviar dados -->
+                            </div>
+                            <input type="submit" value="Buscar Item" class="input-submit">
+                        </form>
 
-                        <?php if (!empty($resultados)): ?>
-                            <div class="filmeBuscadoContainer">
-                                <h3>Resultados:</h3>
-                                <?php foreach ($resultados as $filme): ?>
-                                    <div class="containerIFB">
-                                        <div class="filmeBuscado">
-                                            <div class="infosFilmeBuscado">
-                                                <p><?= htmlspecialchars($filme['title']) ?></p>
-                                                <p>ID: <?= $filme['id'] ?></p>
+                        <form method="post" class="d-flex flex-column">
+                            <?php if (!empty($resultados)): ?>
+                                <div class="filmeBuscadoContainer">
+                                    <h3>Resultados:</h3>
+                                    <?php foreach ($resultados as $filme): ?>
+                                        <div class="containerIFB">
+                                            <div class="filmeBuscado">
+                                                <div class="infosFilmeBuscado">
+                                                    <p><?= htmlspecialchars($filme['title']) ?></p>
+                                                    <p>ID: <?= $filme['id'] ?></p>
+                                                </div>
+                                            </div>
+                                            <p>Sinopse:<br><br> <?= $filme['overview'] ?></p>
+                                            <div class="containerInputIFB d-flex justify-content-end">
+                                                <input type="submit" value="Adicionar Item" class="input-submit ifb">
                                             </div>
                                         </div>
-                                        <p>Sinopse:<br><br> <?= $filme['overview'] ?></p>
-                                        <div class="containerInputIFB d-flex justify-content-end">
-                                            <input type="submit" value="Adicionar Item" class="input-submit ifb">
-                                        </div>
-                                    </div>
-                                <?php endforeach; ?>
-                            </div>
-                        <?php endif; ?>
-                    </form>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php endif; ?>
+                        </form>
+
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Título</th>
+                                <th>Sinopse</th>
+                                <th>Data de Lançamento</th>
+                                <th>Gêneros</th>
+                                <th>Duração (min)</th>
+                                <th>Preço (R$)</th>
+                                <th>Disponível</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($filmes as $filme): ?>
+                                <tr>
+                                    <td><?= $filme['id'] ?></td>
+                                    <td><?= htmlspecialchars($filme['titulo']) ?></td>
+                                    <td><?= htmlspecialchars($filme['sinopse']) ?></td>
+                                    <td><?= $filme['release_date'] ?></td>
+                                    <td><?= htmlspecialchars($filme['generos']) ?></td>
+                                    <td><?= $filme['duracao_minutos'] ?></td>
+                                    <td><?= number_format($filme['preco'], 2, ',', '.') ?></td>
+                                    <td><?= $filme['disponivel'] ? 'Sim' : 'Não' ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
                 </div>
         </div>
     </main>

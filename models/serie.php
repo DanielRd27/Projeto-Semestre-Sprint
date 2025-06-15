@@ -1,6 +1,6 @@
 <?php
 
-require "../midia.php";
+require_once "../models/midia.php";
 
 class Series extends Midia {
 
