@@ -8,6 +8,10 @@ require "../models/serie.php";
 require "../models/user.php";
 require "../config/connectDB.php";
 
+ini_set('log_errors', 1);
+ini_set('error_log', '/php-error.log');
+error_reporting(E_ALL);
+
 class Streaming {
 
     // contruct, listar filmes, listar series, adicionar item, remover item, editar item, adicionar usuario, remover usuario, alugar item, devolver item
@@ -49,6 +53,10 @@ class Streaming {
         }
     }
 
+    public function getFilmes(): array {
+        return $this->filmes;
+    }
+
     public function carregarSeries(): void{
         $stmt = $this->db->query("SELECT * FROM serie");
         $serieDb = $stmt->fetchAll();
@@ -58,13 +66,13 @@ class Streaming {
         foreach ($serieDb as $dado) {
             $temporadas_Episodios = []; // reinicia o array para cada série
 
-            $stmt = $this->db->query("SELECT * FROM temporadas WHERE serie_id = ?");
+            $stmt = $this->db->query("SELECT * FROM temporada WHERE serie_id = ?");
             $stmt->execute([$dado['id']]);
             $temporadas = $stmt->fetchAll();
 
             foreach ($temporadas as $temporada) {
 
-                $stmt = $this->db->prepare("SELECT * FROM episodios WHERE temporada_id = ?");
+                $stmt = $this->db->prepare("SELECT * FROM episodio WHERE temporada_id = ?");
                 $stmt->execute([$temporada['id']]);
                 $episodios = $stmt->fetchAll();
 
@@ -89,6 +97,10 @@ class Streaming {
 
             $this->series[] = $serie;
         }
+    }
+
+    public function getSeries(): array {
+        return $this->series;
     }
 
     public function carregarFilmesAlugados(): void{
@@ -233,7 +245,7 @@ class Streaming {
             }
 
         } catch (\PDOException $e) {
-            // Em caso de erro, como placa duplicada
+            error_log("Erro ao inserir mídia: " . $e->getMessage());
             return false;
         }
     }

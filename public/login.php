@@ -1,4 +1,28 @@
+<?php
 
+require_once "../services/auth.php";
+
+$mensagem = '';
+$auth = new Auth();
+
+// Se já estiver logado, redireciona para index
+if (Auth::verificarLogin()) {
+    header('Location: ../index.php');
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = $_POST['username'] ?? '';
+    $password = $_POST['password'] ?? '';
+    
+    if ($auth->login($username, $password)) {
+        header('Location: ../index.php');
+        exit;
+    } else {
+        $mensagem = 'Usuário ou senha inválidos';
+    }
+}
+?>
 
 <html lang="pt-br">
 <head>

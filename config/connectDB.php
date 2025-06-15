@@ -5,7 +5,7 @@
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');         // Altere para seu usuário do MySQL
 define('DB_PASS', 'LukeSo2711@');    // Altere para sua senha do MySQL
-define('DB_NAME', 'locadora_db');  // Nome do banco de dados
+define('DB_NAME', 'streamingsn_db');  // Nome do banco de dados
 
 // Constantes de diárias
 define('DIARIA_CARRO', 100.00);
@@ -31,7 +31,6 @@ function getConnection() {
                 PDO::ATTR_EMULATE_PREPARES => false
             ]
         );
-        echo("Connect pai");
         return $pdo;
     } catch (PDOException $e) {
         // Em produção, evite mostrar detalhes do erro

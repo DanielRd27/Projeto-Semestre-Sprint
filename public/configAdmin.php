@@ -1,45 +1,27 @@
 <?php
 
 require "../services/streamingServices.php";
+require "../services/tmdb.php";
+$streaming = new Streaming;
+$tmdb = new Tmdb;
+$teste = 0;
+$filmes = [];
 
-$apiKey = '72872d046ca2baa1e585a796cd99ccda'; // <-- Substitua com sua API key real
+$apiKey = '72872d046ca2baa1e585a796cd99ccda';
 $resultados = [];
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['busca']) && !empty(trim($_GET['busca']))) {
-    
-        $arquivosJson = glob('*.json');
-    
-        foreach ($arquivosJson as $arquivo) {
-            if (is_file($arquivo)) {
-                unlink($arquivo);
-            }
-        }
-    
         $query = urlencode($_GET['busca']);
-        $url = "https://api.themoviedb.org/3/search/movie?api_key=$apiKey&language=pt-BR&query=$query";
-    
-        $response = file_get_contents($url);
-        $data = json_decode($response, true);
-    
-        if (isset($data['results'])) {
-            foreach ($data['results'] as $filme) {
-                $resultados[] = [
-                'id' => $filme['id'],
-                'title' => $filme['title'],
-                'overview' => $filme['overview']
-            ];
-            }
-    
-            // Salva o JSON em arquivo local (opcional)
-            $nomeArquivo = 'resultado_' . preg_replace('/\W+/', '_', $_GET['busca']) . '.json';
-            file_put_contents($nomeArquivo, json_encode($resultados, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
-        }
+        $resultados = $tmdb->pesquisar($query);
     }
-}
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
+} elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (isset($_POST['adicionar'])) {
+        $newFilme = $tmdb->criarMidia($_POST['id']);
+        $streaming->adicionarMidia($newFilme);
+        
+        $filmes[] = $streaming->getFilmes();
+    }
 }
 ?>
 
@@ -104,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
         
                     <!-- Formulário -->
-                    <div class="d-flex flex-column">
+                    <div class="d-flex flex-column" style="width: 100%;">
                         <form method="get" class="d-flex flex-column">
                             <!-- Input nome -->
                             <div class="input-container">
@@ -116,33 +98,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <input type="submit" value="Buscar Item" class="input-submit">
                         </form>
 
-                        <form method="post" class="d-flex flex-column">
-                            <?php if (!empty($resultados)): ?>
-                                <div class="filmeBuscadoContainer">
-                                    <h3>Resultados:</h3>
-                                    <?php foreach ($resultados as $filme): ?>
+                        <?php if (!empty($resultados)): ?>
+                            <div class="filmeBuscadoContainer">
+                                <h3>Resultados:</h3>
+                                <?php foreach ($resultados as $filme): ?>
+                                    <form method="post" class="d-flex flex-column">
                                         <div class="containerIFB">
                                             <div class="filmeBuscado">
                                                 <div class="infosFilmeBuscado">
                                                     <p><?= htmlspecialchars($filme['title']) ?></p>
                                                     <p>ID: <?= $filme['id'] ?></p>
+                                                    <input type="hidden" name="id" value="<?= $filme['id'] ?>">
+                                                    <input type="hidden" name="adicionar" value="1"> <!-- para identificar no PHP -->
                                                 </div>
                                             </div>
-                                            <p>Sinopse:<br><br> <?= $filme['overview'] ?></p>
+                                            <p>Sinopse:<br><br> <?= htmlspecialchars($filme['overview']) ?></p>
                                             <div class="containerInputIFB d-flex justify-content-end">
                                                 <input type="submit" value="Adicionar Item" class="input-submit ifb">
                                             </div>
                                         </div>
-                                    <?php endforeach; ?>
-                                </div>
-                            <?php endif; ?>
-                        </form>
+                                    </form>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endif; ?>
 
                     </div>
 
+                    <!-- Filmes -->
                     <table>
                         <thead>
                             <tr>
+                                <th>Capa</th>
                                 <th>ID</th>
                                 <th>Título</th>
                                 <th>Sinopse</th>
@@ -156,14 +142,47 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <tbody>
                             <?php foreach ($filmes as $filme): ?>
                                 <tr>
-                                    <td><?= $filme['id'] ?></td>
-                                    <td><?= htmlspecialchars($filme['titulo']) ?></td>
-                                    <td><?= htmlspecialchars($filme['sinopse']) ?></td>
-                                    <td><?= $filme['release_date'] ?></td>
-                                    <td><?= htmlspecialchars($filme['generos']) ?></td>
-                                    <td><?= $filme['duracao_minutos'] ?></td>
-                                    <td><?= number_format($filme['preco'], 2, ',', '.') ?></td>
-                                    <td><?= $filme['disponivel'] ? 'Sim' : 'Não' ?></td>
+                                    <td><img src="<?= $filme->getImagemPath() ?>"></td>
+                                    <td><?= $filme->getId() ?></td>
+                                    <td><?= htmlspecialchars($filme->getTitulo()) ?></td>
+                                    <td><?= htmlspecialchars($filme->getSinopse()) ?></td>
+                                    <td><?= $filme->getReleaseDate() ?></td>
+                                    <td><?= htmlspecialchars($filme->getGeneros()) ?></td>
+                                    <td><?= $filme->getDuracaoMinutos() ?></td>
+                                    <td><?= number_format($filme->getPreco(), 2, ',', '.') ?></td>
+                                    <td><?= $filme->isDisponivel() ? 'Sim' : 'Não' ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+
+                    <!-- Series -->
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Capa</th>
+                                <th>ID</th>
+                                <th>Título</th>
+                                <th>Sinopse</th>
+                                <th>Data de Lançamento</th>
+                                <th>Gêneros</th>
+                                <th>Temporadas (Qtn)</th>
+                                <th>Preço (R$)</th>
+                                <th>Disponível</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($streaming->getSeries() as $serie): ?>
+                                <tr>
+                                    <td><?= $serie->getImagemPath() ?></td>
+                                    <td><?= $serie->getId() ?></td>
+                                    <td><?= htmlspecialchars($serie->getTitulo()) ?></td>
+                                    <td><?= htmlspecialchars($serie->getSinopse()) ?></td>
+                                    <td><?= $serie->getReleaseDate() ?></td>
+                                    <td><?= htmlspecialchars($serie->getGeneros()) ?></td>
+                                    <td><?= count($serie->getTemporadasEpisodios()) ?></td>
+                                    <td><?= number_format($serie->getPreco(), 2, ',', '.') ?></td>
+                                    <td><?= $serie->isDisponivel() ? 'Sim' : 'Não' ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>

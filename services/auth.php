@@ -24,6 +24,23 @@ class Auth {
         return false;
     }
 
+    public function cadastrar(string $username, string $email,string $password): bool {
+        $stmt = $this->db->prepare("INSERT INTO usuario  (username, email, password, perfil, data_criacao) 
+                VALUES (?, ?, ?, ?, ?)");
+                
+        password_hash($senha_admin, PASSWORD_DEFAULT);
+
+        $result = $stmt->execute([
+                    $midia->getTitulo(),
+                    $midia->getImagemPath(),
+                    $midia->getSinopse(),
+                    $midia->getReleaseDate(),
+                    $midia->getGeneros(),
+                    $midia->getPreco(),
+                    $midia->isDisponivel(),
+                ]);
+    }
+
     public function logout(): void {
         session_destroy();
     }

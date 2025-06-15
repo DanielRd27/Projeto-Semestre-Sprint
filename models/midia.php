@@ -4,13 +4,13 @@ abstract class Midia {
     protected string $titulo;
     protected string $imagem_path;
     protected string $sinopse;
-    protected string $release_date;
+    protected int $release_date;
     protected string $generos;
     protected float $preco;
     protected bool $disponivel;
     protected ?int $id = null;
     
-    public function __construct(string $titulo, string $imagem_path, string $sinopse, string $release_date, string $generos, float $preco, bool $disponivel, ?int $id = null) {
+    public function __construct(string $titulo, string $imagem_path, string $sinopse, int $release_date, string $generos, float $preco, bool $disponivel, ?int $id = null) {
         $this->titulo = $titulo;
         $this->imagem_path = $imagem_path;
         $this->sinopse = $sinopse;
@@ -37,7 +37,7 @@ abstract class Midia {
         return $this->sinopse;
     }
 
-    public function getReleaseDate(): string {
+    public function getReleaseDate(): int {
         return $this->release_date;
     }
 
@@ -54,7 +54,7 @@ abstract class Midia {
         return $this->disponivel;
     }
 
-    public function getId(): int {
+    public function getId() {
         return $this->id;
     }
 

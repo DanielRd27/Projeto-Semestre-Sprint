@@ -3,11 +3,11 @@
 require_once "../models/midia.php";
 
 
-class Filmes extends Midia {
+class Filme extends Midia {
     protected int $duracao_minutos;
     protected string $tipo = "Filme";
 
-    public function __construct(string $titulo, string $imagem_path, string $sinopse, string $release_date, string $generos, float $preco, bool $disponivel, int $id, int $duracao_minutos) {
+    public function __construct(string $titulo, string $imagem_path, string $sinopse, int $release_date, string $generos, float $preco, bool $disponivel, int $duracao_minutos, ?int $id = null) {
         parent::__construct($titulo, $imagem_path, $sinopse, $release_date, $generos, $preco, $disponivel, $id);
         $this->duracao_minutos = $duracao_minutos;
     
@@ -15,6 +15,10 @@ class Filmes extends Midia {
 
     public function getDuracaoMinutos(): int {
         return $this->duracao_minutos;
+    }
+
+    public function teste(): int {
+        return 2;
     }
 
 }
