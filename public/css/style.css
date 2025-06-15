@@ -374,7 +374,7 @@ body {
     .card-form-custom-index {
         margin-top: 2rem;
 
-        width: 48%;
+        width: 100%;
         background-color: #14004039;
         border-radius: 10px;
 
@@ -682,4 +682,27 @@ body {
 #containerMainPage {
     display: flex;
     flex-direction: column;
+}
+
+/* ConfigAdmin.php */
+
+.filmeBuscadoContainer {
+    border-radius: 10px;
+    padding: 1rem;
+    background-color: #10128f3b;
+}
+
+.infosFilmeBuscado{
+    display: flex;
+    gap: 10rem;
+}
+
+.ifb {
+    padding: 0 1rem;
+}
+
+.filmeBuscado {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
 }

@@ -1,0 +1,402 @@
+[
+    {
+        "adult": false,
+        "backdrop_path": "\/sRvXNDItGlWCqtO3j6wks52FmbD.jpg",
+        "genre_ids": [
+            16,
+            35,
+            14,
+            12,
+            10751
+        ],
+        "id": 808,
+        "original_language": "en",
+        "original_title": "Shrek",
+        "overview": "Em um pântano distante vive Shrek, um ogro solitário que vê, sem mais nem menos, sua vida ser invadida por uma série de personagens de contos de fada, como três ratos cegos, um grande e malvado lobo e ainda três porcos que não têm um lugar onde morar. Todos eles foram expulsos de seus lares pelo maligno Lorde Farquaad. Determinado a recuperar a tranquilidade de antes, Shrek resolve encontrar Farquaad e com ele faz um acordo: todos os personagens poderão retornar aos seus lares se ele e seu amigo Burro resgatarem uma bela princesa, que é prisioneira de um dragão. Porém, quando Shrek e o Burro enfim conseguem resgatar a princesa logo eles descobrem que seus problemas estão apenas começando.",
+        "popularity": 23.9844,
+        "poster_path": "\/iB64vpL3dIObOtMZgX3RqdVdQDc.jpg",
+        "release_date": "2001-05-18",
+        "title": "Shrek",
+        "video": false,
+        "vote_average": 7.752,
+        "vote_count": 17729
+    },
+    {
+        "adult": false,
+        "backdrop_path": "\/5lUaKCo9ypmXbuVeZqKQ9gm8zk4.jpg",
+        "genre_ids": [
+            12,
+            16,
+            35,
+            14,
+            10751
+        ],
+        "id": 13394,
+        "original_language": "en",
+        "original_title": "Shrek the Halls",
+        "overview": "O Natal está chegando e Fiona (Cameron Diaz) está empolgada para passar seu primeiro Natal com Shrek (Mike Meyers) e seus filhos. O problema é que Shrek não tem ideia de como se comemora essa data. Ele, então, compra um livro para ajudá-lo. Tudo corre bem com os preparativos até que Burro (Eddie Murphy) e os outros personagens aparecem em sua casa para a festa de Natal.",
+        "popularity": 3.2142,
+        "poster_path": "\/bkIEMVAYQHUhkxyLA9dhozDCLAt.jpg",
+        "release_date": "2007-11-28",
+        "title": "Shrek Bate o Sino",
+        "video": false,
+        "vote_average": 6.356,
+        "vote_count": 869
+    },
+    {
+        "adult": false,
+        "backdrop_path": "\/qSNz1G1Ts8fFw6v4Vae4aMAjcY7.jpg",
+        "genre_ids": [
+            14,
+            12,
+            16,
+            35,
+            10751
+        ],
+        "id": 810,
+        "original_language": "en",
+        "original_title": "Shrek the Third",
+        "overview": "O rei Harold, pai de Fiona, morre repentinamente. Com isto Shrek precisa ser coroado rei, algo que ele jamais pensou em ser. Juntamente com o Burro e o Gato de Botas, ele precisa encontrar alguém que possa substituí-lo no cargo de soberano do Reino de Tão, Tão Distante. O principal candidato é Artie, um jovem desprezado por todos em sua escola, que é primo de Fiona.",
+        "popularity": 12.4572,
+        "poster_path": "\/4qVzBuD2ZbOZChMSnVlMGgT7xhS.jpg",
+        "release_date": "2007-05-17",
+        "title": "Shrek Terceiro",
+        "video": false,
+        "vote_average": 6.298,
+        "vote_count": 9284
+    },
+    {
+        "adult": false,
+        "backdrop_path": "\/kk1Yk0mcIOXJ9yC6rQvkbRCKemo.jpg",
+        "genre_ids": [
+            35,
+            10751,
+            16
+        ],
+        "id": 128914,
+        "original_language": "en",
+        "original_title": "Shrek's Thrilling Tales",
+        "overview": "Quando chega o Halloween, Shrek mal pode esperar para comemorar seu feriado favorito ao estilo ogro. Ao invés do comum \"doces ou travessuras\", Shrek desafia o Burro, o Gato de Botas e outros personagens de contos de fadas para um concurso de contar histórias. Antes da noite de sustos começar, eles precisarão passar a noite no castelo assombrado do Lord Farquaad. O último a levar um susto ganha.",
+        "popularity": 1.3835,
+        "poster_path": "\/3wFlq0jFqW7vS0ttjLsWaoWOVKA.jpg",
+        "release_date": "2012-08-28",
+        "title": "Assustando Shrek",
+        "video": true,
+        "vote_average": 6.724,
+        "vote_count": 125
+    },
+    {
+        "adult": false,
+        "backdrop_path": "\/gVl6aX2paJIHpMxAAe8X36VNExi.jpg",
+        "genre_ids": [
+            35,
+            12,
+            14,
+            16,
+            10751
+        ],
+        "id": 10192,
+        "original_language": "en",
+        "original_title": "Shrek Forever After",
+        "overview": "Shrek faz um pacto com Rumpelstiltskin para sentir-se como um ogro de verdade novamente, mas ele é enganado e enviado para uma versão distorcida de Tão, Tão Distante - onde Rumpelstiltskin é rei, ogros são caçados, e ele e Fiona nunca se encontraram - ele decide restaurar o seu mundo e recuperar seu verdadeiro amor.",
+        "popularity": 13.3057,
+        "poster_path": "\/iFXVU0ni6YWgQNSPkoGO1Tk5L3g.jpg",
+        "release_date": "2010-05-20",
+        "title": "Shrek Para Sempre",
+        "video": false,
+        "vote_average": 6.384,
+        "vote_count": 7558
+    },
+    {
+        "adult": false,
+        "backdrop_path": "\/opNiumfwhYTsibC4ex71tmYGAEd.jpg",
+        "genre_ids": [
+            14,
+            16,
+            35,
+            10751
+        ],
+        "id": 51256,
+        "original_language": "en",
+        "original_title": "Donkey's Christmas Shrektacular",
+        "overview": "As risadas do Burro vão encher os salões, nesta coletânea de Natal totalmente nova. Burro apresenta seu próprio show natalino, com seus amigos de Tão Tão Distante, neste alegre presente musical, com todos os enfeites da época! Entre no SHREKTACULAR espírito natalino, com as festivas canções, a engraçada Decoração do Burro e uma hilariante lareira virtual que é tão cômica, que está pegando fogo!",
+        "popularity": 1.2096,
+        "poster_path": "\/rNMPAu1s4P8PRymJRnVdn4G2rin.jpg",
+        "release_date": "2010-12-07",
+        "title": "Natal Shrektacular do Burro",
+        "video": false,
+        "vote_average": 5.8,
+        "vote_count": 179
+    },
+    {
+        "adult": false,
+        "backdrop_path": "\/tcHdogyWBZktk2JtO3oIqdJ24bW.jpg",
+        "genre_ids": [
+            16,
+            35,
+            10402,
+            10751,
+            10749
+        ],
+        "id": 26840,
+        "original_language": "en",
+        "original_title": "Shrek in the Swamp Karaoke Dance Party",
+        "overview": "Shrek e seus amigos se divertem com algumas festas de karaokê.",
+        "popularity": 1.3259,
+        "poster_path": "\/lJg4alrYfp7CDNVID4iGefT9CIn.jpg",
+        "release_date": "2001-11-02",
+        "title": "Shrek no Baile de Karaokê do Pântano",
+        "video": false,
+        "vote_average": 6.4,
+        "vote_count": 130
+    },
+    {
+        "adult": false,
+        "backdrop_path": "\/6eNNQc5UQ1GjNcKkz1Fht5K0ALQ.jpg",
+        "genre_ids": [
+            10402,
+            35,
+            16,
+            10751
+        ],
+        "id": 58508,
+        "original_language": "en",
+        "original_title": "Far Far Away Idol",
+        "overview": "Shrek, Fiona, Burro, Gato de Botas e o resto do Reino Tão Tão Distante, lutam em uma competição de canto.",
+        "popularity": 1.2236,
+        "poster_path": "\/7dYOQjiUS9WY4AuXYvJG6cMZZmm.jpg",
+        "release_date": "2004-11-05",
+        "title": "Shrek e os Ídolos de Tão Tão Distante",
+        "video": false,
+        "vote_average": 6.343,
+        "vote_count": 235
+    },
+    {
+        "adult": false,
+        "backdrop_path": "\/9QXx4tS65s3oUBoQ27bMIwmBD9x.jpg",
+        "genre_ids": [
+            16,
+            35,
+            10751
+        ],
+        "id": 48466,
+        "original_language": "en",
+        "original_title": "Scared Shrekless",
+        "overview": "Quando chega o Halloween, Shrek mal pode esperar para comemorar seu feriado favorito ao estilo ogro. Ao invés do comum “doces ou travessuras”, Shrek desafia o Burro, o Gato de Botas e outros personagens de contos de fadas para um concurso de contar histórias. Antes da noite de sustos começar, eles precisarão passar a noite no castelo assombrado do Lord Farquaad. O último a levar um susto ganha.",
+        "popularity": 1.6917,
+        "poster_path": "\/aAQQJhX8NqKZ7ZNDUPQQKi1wK8h.jpg",
+        "release_date": "2010-10-28",
+        "title": "O Susto de Shrek",
+        "video": false,
+        "vote_average": 6.7,
+        "vote_count": 475
+    },
+    {
+        "adult": false,
+        "backdrop_path": "\/zWDZckQzoHEE4oipgVNWXIFpXCH.jpg",
+        "genre_ids": [
+            10402,
+            35,
+            14
+        ],
+        "id": 381696,
+        "original_language": "en",
+        "original_title": "Shrek the Musical",
+        "overview": "Vivendo sozinho em seu pântano, o rabugento ogro Shrek um dia é surpreendido por um grupo de criaturas dos contos de fada que ali foram despejadas por ordem de Lord Farquaad, um excêntrico e nada amigável nobre.",
+        "popularity": 1.1147,
+        "poster_path": "\/wRvMRdLa8zQ85drGAWEsZTuKJO.jpg",
+        "release_date": "2013-09-17",
+        "title": "Shrek, o Musical",
+        "video": false,
+        "vote_average": 7.2,
+        "vote_count": 123
+    },
+    {
+        "adult": false,
+        "backdrop_path": "\/iaNoLnnpQb5SNxGc4bkQmdCvEdG.jpg",
+        "genre_ids": [
+            16,
+            10751,
+            35,
+            14,
+            12
+        ],
+        "id": 809,
+        "original_language": "en",
+        "original_title": "Shrek 2",
+        "overview": "Após se casar com a Princesa Fiona (Cameron Diaz), Shrek (Mike Myers) vive feliz em seu pântano. Ao retornar de sua lua-de-mel Fiona recebe uma carta de seus pais, que não sabem que ela agora é um ogro, convidando-a para um jantar juntamente com seu grande amor, na intenção de conhecê-lo. A muito custo Fiona consegue convencer Shrek a ir visitá-los, tendo ainda a companhia do Burro (Eddie Murphy). Porém os problemas começam quando os pais de Fiona descobrem que ela não se casou com o Príncipe (Rupert Everett), a quem havia sido prometida, e enviam o Gato de Botas (Antonio Banderas) para separá-los.",
+        "popularity": 16.6068,
+        "poster_path": "\/2yYP0PQjG8zVqturh1BAqu2Tixl.jpg",
+        "release_date": "2004-05-19",
+        "title": "Shrek 2",
+        "video": false,
+        "vote_average": 7.296,
+        "vote_count": 12705
+    },
+    {
+        "adult": false,
+        "backdrop_path": "\/tgiuYuRg0vKh8OSjxbl1DzT9BfI.jpg",
+        "genre_ids": [
+            16,
+            10751,
+            35,
+            14
+        ],
+        "id": 421892,
+        "original_language": "en",
+        "original_title": "Shrek 5",
+        "overview": "O próximo filme da franquia Shrek. Enredo TBA.",
+        "popularity": 4.3573,
+        "poster_path": "\/aRntI6gNBMu4B6YozI7rxXRPyQo.jpg",
+        "release_date": "2026-12-23",
+        "title": "Shrek 5",
+        "video": false,
+        "vote_average": 0,
+        "vote_count": 0
+    },
+    {
+        "adult": false,
+        "backdrop_path": "\/vxrq0732TWjE9PVQDDrmEjZB7fk.jpg",
+        "genre_ids": [
+            35
+        ],
+        "id": 1192714,
+        "original_language": "fr",
+        "original_title": "Shreklife",
+        "overview": "Five childhood friends reunite for the first time after the death of their classmate Pedro, an unconditional Shrek fan. They are entrusted with an important mission: to honor the memory of the deceased by scattering his ashes at Shrekfest, a festival in honor of the green ogre and taking place in Wisconsin, USA.",
+        "popularity": 0.1906,
+        "poster_path": "\/af15KkhD9Iuc1CBHnHgZaELZugT.jpg",
+        "release_date": "",
+        "title": "Shreklife",
+        "video": false,
+        "vote_average": 0,
+        "vote_count": 0
+    },
+    {
+        "adult": false,
+        "backdrop_path": "\/uzAgDIVftkbdtIseFVbPREVgQWB.jpg",
+        "genre_ids": [
+            16,
+            10751,
+            14,
+            35
+        ],
+        "id": 151316,
+        "original_language": "en",
+        "original_title": "Shrek's Yule Log",
+        "overview": "“Shrek’s Yule Log,” featuring over 25 uproarious character appearances in front of a crackling virtual fireplace.  This was bundled with \"Donkey's Christmas Shrektacular\"",
+        "popularity": 0.7879,
+        "poster_path": "\/nndNC9xi7b0i2ZKWODpraOfFf5c.jpg",
+        "release_date": "2010-12-07",
+        "title": "Shrek's Yule Log",
+        "video": true,
+        "vote_average": 6.167,
+        "vote_count": 39
+    },
+    {
+        "adult": false,
+        "backdrop_path": "\/rzRthZa34uJUmnmvnepxxBSaRw0.jpg",
+        "genre_ids": [
+            10751
+        ],
+        "id": 252634,
+        "original_language": "en",
+        "original_title": "Shrek Stories",
+        "overview": "Join Shrek and his friends from Far Far Away as they share tales of holiday cheer, spooky stories, a singing showdown and a night of babysitting nobody will soon forget.",
+        "popularity": 0.9358,
+        "poster_path": "\/j1Ew14NWmwTYqGYNNS7YTWIJXae.jpg",
+        "release_date": "2013-10-01",
+        "title": "Shrek Stories",
+        "video": true,
+        "vote_average": 8.1,
+        "vote_count": 39
+    },
+    {
+        "adult": false,
+        "backdrop_path": null,
+        "genre_ids": [
+            99
+        ],
+        "id": 726391,
+        "original_language": "en",
+        "original_title": "Shrek: Once Upon a Time",
+        "overview": "A making-of for the Shrek series.",
+        "popularity": 0.5826,
+        "poster_path": "\/lP2JtQ1sqAi8Wc8zx2mvfkIcKxZ.jpg",
+        "release_date": "2011-12-30",
+        "title": "Shrek: Once Upon a Time",
+        "video": false,
+        "vote_average": 7.5,
+        "vote_count": 10
+    },
+    {
+        "adult": false,
+        "backdrop_path": null,
+        "genre_ids": [
+            99,
+            10770
+        ],
+        "id": 575506,
+        "original_language": "en",
+        "original_title": "Creating a Fairy Tale World: The Making of Shrek",
+        "overview": "Behind-the-scenes look at the making of the DreamWorks Pictures animated feature, \"Shrek.\"",
+        "popularity": 0.4589,
+        "poster_path": "\/65nYHT6wbfbrkUcAr5lxcPOdUCt.jpg",
+        "release_date": "2001-04-22",
+        "title": "Creating a Fairy Tale World: The Making of Shrek",
+        "video": false,
+        "vote_average": 9.7,
+        "vote_count": 5
+    },
+    {
+        "adult": false,
+        "backdrop_path": "\/d9PGA6Z7xAzAYEt8gGF4CNkPVqS.jpg",
+        "genre_ids": [
+            35,
+            18
+        ],
+        "id": 735251,
+        "original_language": "it",
+        "original_title": "L'amore ai tempi di Sh.Rek",
+        "overview": "",
+        "popularity": 0.114,
+        "poster_path": "\/nPr5OAkJ75k910mKXYgjkxCa166.jpg",
+        "release_date": "2019-05-12",
+        "title": "L'amore ai tempi di Sh.Rek",
+        "video": false,
+        "vote_average": 6.4,
+        "vote_count": 7
+    },
+    {
+        "adult": false,
+        "backdrop_path": null,
+        "genre_ids": [],
+        "id": 951495,
+        "original_language": "en",
+        "original_title": "\"Vegeta\" (Shrek)",
+        "overview": "By Jaden Pictures \/ YouTube  This animated movie spoof shows a story about a Saiyan named Vegeta, who lives alone his home, and enjoys his isolation, when 1 day, he meets another Saiyan named Goku (who he refers to as Kakarot), and then on the night he met Goku, a bunch of Non-Dragon Ball characters come to his property, because they were ordered by Simon Petrikov to go there, so Vegeta goes on a long adventure with Goku to see Simon, and get his home and isolation back.\r Later on, the adventure also becomes an adventure to rescue Princess Bubblegum from a castle guarded by Flame Princess, and bring her to Simon, so that he can marry her, and become king.\r Not to mention, Princess Bubblegum even has a secret that is to be revealed at some point in this animated movie spoof.",
+        "popularity": 0.0327,
+        "poster_path": null,
+        "release_date": "",
+        "title": "\"Vegeta\" (Shrek)",
+        "video": false,
+        "vote_average": 8,
+        "vote_count": 1
+    },
+    {
+        "adult": false,
+        "backdrop_path": null,
+        "genre_ids": [],
+        "id": 1146942,
+        "original_language": "sv",
+        "original_title": "Shrek - Sovande bäbis!",
+        "overview": "",
+        "popularity": 0.0071,
+        "poster_path": null,
+        "release_date": "",
+        "title": "Shrek - Sovande bäbis!",
+        "video": false,
+        "vote_average": 0,
+        "vote_count": 0
+    }
+]
