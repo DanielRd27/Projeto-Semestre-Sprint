@@ -3,6 +3,15 @@ $apiKey = '72872d046ca2baa1e585a796cd99ccda'; // <-- Substitua com sua API key r
 $resultados = [];
 
 if (isset($_GET['q']) && !empty(trim($_GET['q']))) {
+
+    $arquivosJson = glob('*.json');
+
+    foreach ($arquivosJson as $arquivo) {
+        if (is_file($arquivo)) {
+            unlink($arquivo);
+        }
+    }
+
     $query = urlencode($_GET['q']);
     $url = "https://api.themoviedb.org/3/search/movie?api_key=$apiKey&language=pt-BR&query=$query";
 
@@ -100,12 +109,17 @@ if (isset($_GET['q']) && !empty(trim($_GET['q']))) {
                             <div class="filmeBuscadoContainer">
                                 <h3>Resultados:</h3>
                                 <?php foreach ($resultados as $filme): ?>
-                                    <div class="filmeBuscado">
-                                        <div class="infosFilmeBuscado">
-                                            <p><?= htmlspecialchars($filme['title']) ?></p>
-                                            <p name ='id'    >ID: <?= $filme['id'] ?></p>
+                                    <div class="containerIFB">
+                                        <div class="filmeBuscado">
+                                            <div class="infosFilmeBuscado">
+                                                <p><?= htmlspecialchars($filme['title']) ?></p>
+                                                <p>ID: <?= $filme['id'] ?></p>
+                                            </div>
                                         </div>
-                                        <input type="submit" value="Adicionar Item" class="input-submit ifb">
+                                        <p>Sinopse:<br><br> <?= $filme['overview'] ?></p>
+                                        <div class="containerInputIFB d-flex justify-content-end">
+                                            <input type="submit" value="Adicionar Item" class="input-submit ifb">
+                                        </div>
                                     </div>
                                 <?php endforeach; ?>
                             </div>
