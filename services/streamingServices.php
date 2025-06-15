@@ -56,7 +56,26 @@ class Streaming {
         $this->series = []; // Limpa a lista antes de carregar
         
         foreach ($serieDb as $dado) {
+            $temporadas_Episodios = []; // reinicia o array para cada série
+
+            $stmt = $this->db->query("SELECT * FROM temporadas WHERE serie_id = ?");
+            $stmt->execute([$dado['id']]);
+            $temporadas = $stmt->fetchAll();
+
+            foreach ($temporadas as $temporada) {
+
+                $stmt = $this->db->prepare("SELECT * FROM episodios WHERE temporada_id = ?");
+                $stmt->execute([$temporada['id']]);
+                $episodios = $stmt->fetchAll();
+
+                $temporadas_Episodios[] = [
+                    "temporada" => $temporada['number'], // ou 'numero', como quiser
+                    "episodios" => $episodios
+                ];
+            }
+
             $serie = new Serie(
+
                     $dado['titulo'], 
                     $dado['imagem_path'], 
                     $dado['sinopse'], 
@@ -64,7 +83,8 @@ class Streaming {
                     $dado['generos'], 
                     $dado['preco'], 
                     (bool)$dado['disponivel'],
-                    $dado['id']
+                    $dado['id'],
+                    $temporadas_Episodios
                 );
 
             $this->series[] = $serie;
@@ -84,13 +104,6 @@ class Streaming {
             $filme = $stmt->fetch();
 
             $filmeAlugado = new FilmeAlugado(
-                    $filme['titulo'], 
-                    $filme['imagem_path'], 
-                    $filme['sinopse'], 
-                    $filme['release_date'], 
-                    $filme['generos'], 
-                    $filme['preco'], 
-                    (bool)$filme['disponivel'],
                     $filme['id'], // ID DO FILME
                     $filme['duracao_minutos'],
                     $dado['data_aluguel'],
@@ -116,13 +129,6 @@ class Streaming {
             $serie = $stmt->fetch();
 
             $serieAlugado = new SerieAlugado(
-                    $serie['titulo'], 
-                    $serie['imagem_path'], 
-                    $serie['sinopse'], 
-                    $serie['release_date'], 
-                    $serie['generos'], 
-                    $serie['preco'], 
-                    (bool)$serie['disponivel'],
                     $serie['id'], // ID DO SERIE
                     $dado['data_aluguel'],
                     $dado['expira_em'],
@@ -138,6 +144,7 @@ class Streaming {
 
     public function adicionarMidia(Midia $midia): bool {
         $tipo = ($midia instanceof Filme) ? 'Filme' : 'Serie';
+        $serieId = null;
         
         try {
             if ($tipo == 'Filme') {
@@ -170,7 +177,7 @@ class Streaming {
                 VALUES (?, ?, ?, ?, ?, ?, ?)
                 ");
                 
-                $result = $stmt->execute([
+                $resultSerie = $stmt->execute([
                     $midia->getTitulo(),
                     $midia->getImagemPath(),
                     $midia->getSinopse(),
@@ -179,10 +186,44 @@ class Streaming {
                     $midia->getPreco(),
                     $midia->isDisponivel(),
                 ]);
+
+                if (!$resultSerie) return false;
+
+                $serieId = $this->db->lastInsertId();
+
+                $temporadas_Episodios = $midia->getTemporadasEpisodios();
+
+                foreach ($temporadas_Episodios as $temporada) {
+                    $stmt = $this->db->prepare("
+                    INSERT INTO temporada (serie_id, number) 
+                    VALUES (?, ?)
+                    ");
+
+                    $resultTemporada = $stmt->execute([
+                        $serieId,
+                        $temporada['numero']
+                    ]);
+
+                    if (!$resultTemporada) continue;
+
+                    $temporadaId = $this->db->lastInsertId();
+
+                    foreach ($temporada['episodios'] as $ep) {
+                        $stmt = $this->db->prepare("
+                        INSERT INTO episodio (titulo, temporada_id	) 
+                        VALUES (?, ?)
+                        ");
+
+                        $resultEpisodio = $stmt->execute([
+                            $ep['titulo'],
+                            $temporadaId
+                        ]);
+                    }   
+                }
                 
-                if ($result) {
+                if ($resultSerie) {
                     // Define o ID gerado no objeto
-                    $midia->setId($this->db->lastInsertId());
+                    $midia->setId($serieId);
                     $this->series[] = $midia;
                 }
                 
