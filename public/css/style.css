@@ -726,3 +726,80 @@ body {
     width: 200px;
     height: auto;
 }
+
+/* Carrinho */
+
+.itemCarrinho {
+    width: 100%;
+    background-color: #D9D9D9;
+    color: rgb(0, 0, 0);
+}
+
+.precoTopTittle{
+    margin-right: 5rem;
+}
+
+.itemCarrinho p {
+    margin-bottom: 0;
+}
+
+.conteudoCarrinho {
+    width: 100%;
+    display: flex;
+}
+
+.infosFilmeCarrinho {
+    width: 100%;
+    padding: 0.5rem 1rem;
+}
+
+.tittleCarrinho {
+    font-size: 1.5rem;
+}
+
+.sinopseCarrinho{
+    margin: 1.5rem 0rem;
+}
+
+.red {
+    color: red;
+}
+
+.sinopseCarrinho p {
+    font-weight: 400;
+    font-size: 1rem;
+}
+
+.sinopseCarrinho h1 {
+    font-weight: 600;
+    font-size: 1.3rem;
+}
+
+.topInfos{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.topInfos .preco {
+     margin-right: 4.5rem;
+}
+
+.subInfosCarrinho{
+    font-size: 0.8rem;
+    font-weight: 400;
+}
+
+.itemCarrinho img {
+    width: 200px;
+}
+
+.topTittle {
+    height: 100%;
+    display: flex;
+    padding: 1rem;
+    justify-content: space-between;
+    color: white;
+    width: 100%;
+    background-color: #000000;
+}
