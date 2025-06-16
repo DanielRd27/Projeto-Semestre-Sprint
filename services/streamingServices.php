@@ -228,8 +228,6 @@ class Streaming {
                         $temporada['numero']
                     ]);
 
-                    if (!$resultTemporada) continue;
-
                     $temporadaId = $this->db->lastInsertId();
 
                     foreach ($temporada['episodios'] as $ep) {
@@ -272,14 +270,37 @@ class Streaming {
             }
 
             if ($id !== null) {
-                $stmt = $this->db->prepare("DELETE FROM filmes WHERE id = ?");
+                $stmt = $this->db->prepare("DELETE FROM filme WHERE id = ?");
                 if ($stmt->execute([$id])) {
                     return "Filmes '{$modelo}' removido com sucesso!";
                 }
             }
 
         } elseif ($tipo == 'Serie'){
+            foreach ($this->series as $serie) {
+                if ($serie->getId() == $id) {
+                    unset($this->series[$serie]);
+                    $this->series = array_values($this->series);
+                }
+            }
 
+            if ($id !== null) {
+                // Deletar serie
+                $stmt = $this->db->prepare("DELETE FROM serie WHERE id = ?");
+                if ($stmt->execute([$id])) {
+                    // Deletar temporadas
+                    $stmt = $this->db->prepare("DELETE FROM serie WHERE id = ?");
+                    if ($stmt->execute([$id])){
+                        // Deletar Episodios
+                        $stmt = $this->db->prepare("DELETE FROM serie WHERE id = ?");
+                        $stmt->execute([$id]);
+                        if ($stmt->execute([$id])) {
+                            return "series '{$modelo}' removido com sucesso!";
+                        }
+                    }
+                }
+                
+            }
         } else {
             return "Midia não encontrada.";
         }

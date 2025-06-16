@@ -19,9 +19,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_POST['adicionar'])) {
         $newFilme = $tmdb->criarMidia($_POST['id']);
         $streaming->adicionarMidia($newFilme);
+
     } elseif (isset($_POST['deletar'])) {
-        $idToDelete = ($_POST['id'])
-        $tipoToDelete = ($_POST['tipo'])
+        $idToDelete = ($_POST['id']);
+        $tipoToDelete = ($_POST['tipo']);
+        $streaming->deletarVeiculo($tipoToDelete, $idToDelete);
+
+    } elseif (isset($_POST['editar'])) {
+        $idToEdit = ($_POST['id']);
         $streaming->deletarVeiculo($tipoToDelete, $idToDelete);
     }
 }
@@ -79,12 +84,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     <main>
         <div class="container container-forms justify-content-between d-flex gap-5" id="containerMainPage">
-            
             <div class="forms d-flex justify-content-between">
                 <!-- Form 1 -->
                 <div class="card-form card-form-custom-index mb-5">
                     <div class="tittle">
-                        Adicionar Novo Item Ao Carrinho
+                        Adicionar Novo Item
                     </div>
         
                     <!-- Formulário -->
@@ -123,9 +127,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                 <?php endforeach; ?>
                             </div>
                         <?php endif; ?>
-
                     </div>
+                </div>
 
+                <!-- Form 2 -->
+                <div class="card-form card-form-custom-index mb-5">
+                    <div class="d-flex flex-column mb-5" style="width: 100%;">
+                        <form method="post" class="d-flex flex-column">
+                            <!-- Input nome -->
+                            <div class="input-container">
+                                <!-- Sistema de pesquisa com DB -->
+                                <label for="name">Nome</label>
+                                <input name='busca' class="input white" type="text" id="searchInput" placeholder="Digite para buscar..." required value="<?= htmlspecialchars($_GET['busca'] ?? '') ?>">
+                                <!-- Input para Entrar / Enviar dados -->
+                            </div>
+                            <input type="submit" value="Buscar Item" class="input-submit">
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Form/Tabela  -->
+                <div class="card-form card-form-custom-index mb-5">
                     <!-- Filmes -->
                     <table>
                         <thead>
