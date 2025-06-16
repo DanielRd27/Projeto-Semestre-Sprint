@@ -3,6 +3,7 @@
 require_once "../config/connectDB.php";
 
 class Auth {
+    private $db;
     
     public function __construct() {
         $this->db = getConnection();
@@ -28,17 +29,15 @@ class Auth {
         $stmt = $this->db->prepare("INSERT INTO usuario  (username, email, password, perfil, data_criacao) 
                 VALUES (?, ?, ?, ?, ?)");
                 
-        password_hash($senha_admin, PASSWORD_DEFAULT);
+        password_hash($password, PASSWORD_DEFAULT);
 
         $result = $stmt->execute([
-                    $midia->getTitulo(),
-                    $midia->getImagemPath(),
-                    $midia->getSinopse(),
-                    $midia->getReleaseDate(),
-                    $midia->getGeneros(),
-                    $midia->getPreco(),
-                    $midia->isDisponivel(),
+                    $username,
+                    $email,
+                    $password,
                 ]);
+
+        return $result;
     }
 
     public function logout(): void {

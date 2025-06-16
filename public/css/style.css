@@ -502,7 +502,7 @@ body {
 
 .dropColor {
     width: 100%;
-    min-height: 180vh;
+    min-height: 200vh;
     position: absolute;
     top: 0;
     left: 0;
@@ -591,7 +591,6 @@ body {
 
 .sliderMovies {
     overflow-x: auto;
-    cursor: grab;
     width: max-content;
     position: relative;
     display: flex;
@@ -641,6 +640,8 @@ body {
     background-color: transparent;
     font-size: 1rem;
     color: white;
+    pointer-events: all;
+    cursor: pointer;
     
     margin-top: 1rem;
     margin-left: 13rem;
@@ -685,6 +686,10 @@ body {
 }
 
 /* ConfigAdmin.php */
+
+.forms-configadmin{
+    flex-direction: column;
+}
 
 .containerIFB{
     border-radius: 10px;

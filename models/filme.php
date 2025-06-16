@@ -17,9 +17,5 @@ class Filme extends Midia {
         return $this->duracao_minutos;
     }
 
-    public function teste(): int {
-        return 2;
-    }
-
 }
 ?>

@@ -4,10 +4,12 @@ require "../services/streamingServices.php";
 require "../services/tmdb.php";
 $streaming = new Streaming;
 $tmdb = new Tmdb;
+$editar = false;
+
 
 $apiKey = '72872d046ca2baa1e585a796cd99ccda';
+// $filmes = $streaming->getFilmes();
 $filmes = $streaming->getFilmes();
-$series = $streaming->getSeries();
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['busca']) && !empty(trim($_GET['busca']))) {
@@ -15,19 +17,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $query = urlencode($_GET['busca']);
         $resultados = $tmdb->pesquisar($query);
     }
+
 } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['adicionar'])) {
-        $newFilme = $tmdb->criarMidia($_POST['id']);
+        $newFilme = $tmdb->criarMidia($_POST['id'], $_POST['titulo']);
         $streaming->adicionarMidia($newFilme);
+        header("Location: " . $_SERVER['PHP_SELF']);
 
     } elseif (isset($_POST['deletar'])) {
         $idToDelete = ($_POST['id']);
         $tipoToDelete = ($_POST['tipo']);
-        $streaming->deletarVeiculo($tipoToDelete, $idToDelete);
+        $streaming->deletarMidia($tipoToDelete, $idToDelete);
+        header("Location: " . $_SERVER['PHP_SELF']);
 
-    } elseif (isset($_POST['editar'])) {
+    } elseif (isset($_POST['prepararEdit'])) {
         $idToEdit = ($_POST['id']);
-        $streaming->deletarVeiculo($tipoToDelete, $idToDelete);
+        $tipoToEdit = ($_POST['tipo']);
+        
+        $itemEditar = $streaming->prepararEdit($tipoToEdit, $idToEdit);
+        $editar = true;
+
+    } elseif (isset($_POST['salvarEdicao'])) {
+        $idToEdit = $_POST['id'];
+        $tipoToEdit = $_POST['tipo'];
+        $preco = floatval($_POST['preco']);
+
+        $itemEditar = $streaming->prepararEdit($tipoToEdit, $idToEdit);
+        $streaming->editarMidia($itemEditar, $preco);
+
+        header("Location: " . $_SERVER['PHP_SELF']);
     }
 }
 ?>
@@ -53,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     <header class="header-index">
         <div class="logo">
             <!-- Logo da empresa -->
-            <a href="index.html"><img src="img/logo.png" alt=""></a>
+            <a href="index.php  "><img src="img/logo.png" alt=""></a>
         </div>
         <div class="navbar">
             <div class="log-div">
@@ -72,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="carrinho.php">Carrinho <i class="bi bi-cart"></i></a></li>
                         <li><a class="dropdown-item" href="#">Meus filmes<i class="bi bi-film"></i></a></li>
-                        <li><a class="dropdown-item text-primary" href="#">Configs Admin<i class="bi bi-building-gear"></i></i></a></li>
+                        <li><a class="dropdown-item text-primary" href="configAdmin.php">Configs Admin<i class="bi bi-building-gear"></i></i></a></li>
                         <li><a class="dropdown-item text-primary" href="#">Configs Helper<i class="bi bi-building-gear"></i></i></a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item text-danger" href="#">Sair</a></li>
@@ -84,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     <main>
         <div class="container container-forms justify-content-between d-flex gap-5" id="containerMainPage">
-            <div class="forms d-flex justify-content-between">
+            <div class="forms forms-configadmin d-flex justify-content-between">
                 <!-- Form 1 -->
                 <div class="card-form card-form-custom-index mb-5">
                     <div class="tittle">
@@ -97,8 +115,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                             <!-- Input nome -->
                             <div class="input-container">
                                 <!-- Sistema de pesquisa com DB -->
-                                <label for="name">Nome</label>
-                                <input name='busca' class="input white" type="text" id="searchInput" placeholder="Digite para buscar..." required value="<?= htmlspecialchars($_GET['busca'] ?? '') ?>">
+                                <label for="searchInput">Nome</label>
+                                <input name='busca' class="input white" type="text" id="searchInput" placeholder="Digite para buscar..." required>
                                 <!-- Input para Entrar / Enviar dados -->
                             </div>
                             <input type="submit" value="Buscar Item" class="input-submit">
@@ -115,6 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                     <p><?= htmlspecialchars($filme['title']) ?></p>
                                                     <p>ID: <?= $filme['id'] ?></p>
                                                     <input type="hidden" name="id" value="<?= $filme['id'] ?>">
+                                                    <input type="hidden" name="titulo" value="<?= $filme['title'] ?>">
                                                     <input type="hidden" name="adicionar" value="1"> <!-- para identificar no PHP -->
                                                 </div>
                                             </div>
@@ -130,29 +149,50 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     </div>
                 </div>
 
-                <!-- Form 2 -->
-                <div class="card-form card-form-custom-index mb-5">
-                    <div class="d-flex flex-column mb-5" style="width: 100%;">
-                        <form method="post" class="d-flex flex-column">
-                            <!-- Input nome -->
-                            <div class="input-container">
-                                <!-- Sistema de pesquisa com DB -->
-                                <label for="name">Nome</label>
-                                <input name='busca' class="input white" type="text" id="searchInput" placeholder="Digite para buscar..." required value="<?= htmlspecialchars($_GET['busca'] ?? '') ?>">
-                                <!-- Input para Entrar / Enviar dados -->
-                            </div>
-                            <input type="submit" value="Buscar Item" class="input-submit">
-                        </form>
+                <!-- Form 2 - EDIT -->
+                <?php if ($editar && isset($itemEditar)): ?>
+                    <div class="card-form card-form-custom-index mb-5">
+                        <div class="tittle">
+                            Editar preço
+                        </div>
+                        <div class="d-flex flex-column mb-5" style="width: 100%;">
+                            <form method="post" class="d-flex flex-column">
+                                <!-- ID e Tipo escondidos -->
+                                <input type="hidden" name="id" value="<?= $itemEditar->getId() ?>">
+                                <input type="hidden" name="tipo" value="<?= $itemEditar->getTipo() ?>">
+                                <input type="hidden" name="salvarEdicao" value="1">
+
+                                <!-- Campo de título somente leitura -->
+                                <div class="input-container">
+                                    <label>Título</label>
+                                    <input name="titulo" class="input white" type="text" 
+                                        value="<?= htmlspecialchars($itemEditar->getTitulo()) ?>" readonly>
+                                </div>
+
+                                <!-- Campo de edição de preço -->
+                                <div class="input-container">
+                                    <label>Preço (R$)</label>
+                                    <input name="preco" class="input white" type="number" step="0.01" min="0" 
+                                        value="<?= htmlspecialchars($itemEditar->getPreco()) ?>" required>
+                                </div>
+
+                                <input type="submit" value="Salvar Alterações" class="input-submit">
+                            </form>
+                        </div>
                     </div>
-                </div>
+                <?php endif; ?>
+
 
                 <!-- Form/Tabela  -->
                 <div class="card-form card-form-custom-index mb-5">
                     <!-- Filmes -->
+                    <div class="tittle">
+                        Filmes
+                    </div>
                     <table>
                         <thead>
                             <tr>
-                                <th>Capa</th>
+                                <th><?= $teste ?></th>
                                 <th>ID</th>
                                 <th>Título</th>
                                 <th>Sinopse</th>
@@ -171,7 +211,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                         <td><img class="imgTable" src="<?= $filme->getImagemPath() ?>"></td>
                                         <td><?= $filme->getId() ?></td>
                                         <td><?= htmlspecialchars($filme->getTitulo()) ?></td>
-                                        <td><?= htmlspecialchars($filme->getSinopse()) ?></td>
+                                        <td><?= htmlspecialchars($filme->getEncurtaSinopse()) ?></td>
                                         <td><?= $filme->getReleaseDate() ?></td>
                                         <td><?= htmlspecialchars($filme->getGeneros()) ?></td>
                                         <td><?= $filme->getDuracaoMinutos() ?></td>
@@ -179,57 +219,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                         <td><?= $filme->isDisponivel() ? 'Sim' : 'Não' ?></td>
                                         <!-- Verificar -->
                                         <td>
-                                            <button type="submit" name="deletar" class="btn btn-danger btn-sm delete-btn">
-                                                <input type="hidden" name="id" value="<?= $filme->getId() ?>">
-                                                <input type="hidden" name="tipo" value="<?= $filme->getTipo() ?>">
-                                                <input type="hidden" name="deletar" value="1"> <!-- para identificar no PHP  !-->
+                                            <button type="submit" name="deletar" class="btn btn-danger btn-sm delete-btn mb-5">
                                                 <i class="bi bi-trash me-1"></i>Deletar
                                             </button>
-                                        </td>
-                                    </form>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-
-                    <!-- Series -->
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Capa</th>
-                                <th>ID</th>
-                                <th>Título</th>
-                                <th>Sinopse</th>
-                                <th>Data de Lançamento</th>
-                                <th>Gêneros</th>
-                                <th>Temporadas (Qtn)</th>
-                                <th>Preço (R$)</th>
-                                <th>Disponível</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($series as $serie): ?>
-                                <tr>
-                                    <form method="post">
-                                        <td><img class="imgTable" src="<?= $serie->getImagemPath() ?>"></td>
-                                        <td><?= $serie->getId() ?></td>
-                                        <td><?= htmlspecialchars($serie->getTitulo()) ?></td>
-                                        <td><?= htmlspecialchars($serie->getSinopse()) ?></td>
-                                        <td><?= $serie->getReleaseDate() ?></td>
-                                        <td><?= htmlspecialchars($serie->getGeneros()) ?></td>
-                                        <td><?= count($serie->getTemporadasEpisodios()) ?></td>
-                                        <td><?= number_format($serie->getPreco(), 2, ',', '.') ?></td>
-                                        <td><?= $serie->isDisponivel() ? 'Sim' : 'Não' ?></td>
-                                        <!-- Verificar -->
-                                        <td>
-                                            <button type="submit" name="deletar" class="btn btn-danger btn-sm delete-btn">
-                                                <input type="hidden" name="id" value="<?= $serie->getId() ?>">
-                                                <input type="hidden" name="tipo" value="<?= $serie->getTipo() ?>">
-                                                <input type="hidden" name="deletar" value="1"> <!-- para identificar no PHP  !-->
-                                                <i class="bi bi-trash me-1"></i>Deletar
+                                            <button type="submit" name="prepararEdit" class="btn btn-primary btn-sm delete-btn">
+                                                <i class="bi bi-pen"></i>Editar
                                             </button>
                                         </td>
+                                        <input type="hidden" name="id" value="<?= $filme->getId() ?>">
+                                        <input type="hidden" name="preco" value="<?= $filme->getPreco() ?>">
+                                        <input type="hidden" name="tipo" value="<?= $filme->getTipo() ?>">
                                     </form>
                                 </tr>
                             <?php endforeach; ?>

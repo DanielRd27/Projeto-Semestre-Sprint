@@ -3,8 +3,6 @@
 
 require "../models/filme.php";
 require "../models/serie.php";
-// require "../models/filmeAlugado.php";
-// require "../models/serieAlugado.php";
 require "../models/user.php";
 require "../config/connectDB.php";
 
@@ -19,15 +17,11 @@ class Streaming {
     private $db;
     private array $filmes = [];
     private array $series = [];
-    private array $filmesAlugados = [];
-    private array $seriesAlugados = [];
 
     public function __construct () {
         $this->db = getConnection();
         $this->carregarSeries();
         $this->carregarFilmes();  
-        $this->carregarFilmesAlugados();  
-        $this->carregarSeriesAlugados();  
     }
 
     public function carregarFilmes(): void{
@@ -60,7 +54,7 @@ class Streaming {
     }
 
     public function carregarSeries(): void{
-        $stmt = $this->db->query("SELECT * FROM serie");
+        $stmt = $this->db->prepare("SELECT * FROM serie");
         $serieDb = $stmt->fetchAll();
         
         $this->series = []; // Limpa a lista antes de carregar
@@ -73,20 +67,26 @@ class Streaming {
             $temporadas = $stmt->fetchAll();
 
             foreach ($temporadas as $temporada) {
+                $episodiosArry = [];
 
                 $stmt = $this->db->prepare("SELECT * FROM episodio WHERE temporada_id = ?");
                 $stmt->execute([$temporada['id']]);
                 $episodios = $stmt->fetchAll();
+                $episodiosArry[] = [
+                    'temp_id' => $episodios['temporada_id'],
+                    'serie_id' => $episodios['serie_id'],
+                    'numero' => $episodios['number'],
+                    'titulo' => $episodios['titulo']
+                ];
 
                 $temporadas_Episodios[] = [
-                    "temporada" => $temporada['number'], // ou 'numero', como quiser
-                    "episodios" => $episodios
+                    'id' => $temporada['id'],
+                    "numero" => $temporada['number'],
+                    "episodios" => $episodiosArry
                 ];
             }
-
      
             $serie = new Serie(
-
                     $dado['titulo'], 
                     $dado['imagem_path'], 
                     $dado['sinopse'], 
@@ -107,66 +107,72 @@ class Streaming {
         return $this->series;
     }
 
-    public function carregarFilmesAlugados(): void{
-        $stmt = $this->db->query("SELECT * FROM filme_alugados");
-        $filmesAlugadosDb = $stmt->fetchAll();
+    // public function carregarFilmesAlugados(): void{
+    //     $stmt = $this->db->query("SELECT * FROM filme_alugados");
+    //     $filmesAlugadosDb = $stmt->fetchAll();
         
-        $this->filmesAlugados = []; // Limpa a lista antes de carregar
+    //     $this->filmesAlugados = []; // Limpa a lista antes de carregar
         
-        foreach ($filmesAlugadosDb as $dado) {
+    //     foreach ($filmesAlugadosDb as $dado) {
 
-            $stmt = $this->db->prepare("SELECT * FROM filme WHERE id = ?");
-            $stmt->execute([$dado['filme_id']]);
-            $filme = $stmt->fetch();
+    //         $stmt = $this->db->prepare("SELECT * FROM filme WHERE id = ?");
+    //         $stmt->execute([$dado['filme_id']]);
+    //         $filme = $stmt->fetch();
 
-            $filmeAlugado = new FilmeAlugado(
-                    $filme['id'], // ID DO FILME
-                    $filme['duracao_minutos'],
-                    $dado['data_aluguel'],
-                    $dado['expira_em'],
-                    $dado['preco_pago'],
-                    $dado['usuario_id']
-                );
+    //         foreach ($this->filmes as $filmeObj) {
+    //             if ($filmeObj->getId() == $dado['filme_id']) {
+                    
+    //             }
+    //         }
 
-            $this->filmesAlugados[] = $filmeAlugado;
-        }
-    }
+    //         $filmeAlugado = new FilmeAlugado(
+    //                 $filme['id'], // ID DO FILME
+    //                 $filme['duracao_minutos'],
+    //                 $dado['data_aluguel'],
+    //                 $dado['expira_em'],
+    //                 $dado['preco_pago'],
+    //                 $dado['usuario_id']
+    //             );
 
-    public function getFilmesAlugados(): array {
-        return $this->filmesAlugados;
-    }
+    //         $this->filmesAlugados[] = $filmeAlugado;
+    //     }
+    // }
 
-    public function carregarSeriesAlugados(): void{
-        $stmt = $this->db->query("SELECT * FROM serie_alugados");
-        $seriesAlugadosDb = $stmt->fetchAll();
+    // public function getFilmesAlugados(): array {
+    //     return $this->filmesAlugados;
+    // }
+
+    // public function carregarSeriesAlugados(): void{
+    //     $stmt = $this->db->query("SELECT * FROM serie_alugados");
+    //     $seriesAlugadosDb = $stmt->fetchAll();
         
-        $this->seriesAlugados = []; // Limpa a lista antes de carregar
+    //     $this->seriesAlugados = []; // Limpa a lista antes de carregar
         
-        foreach ($seriesAlugadosDb as $dado) {
+    //     foreach ($seriesAlugadosDb as $dado) {
 
-            $stmt = $this->db->prepare("SELECT * FROM serie WHERE id = ?");
-            $stmt->execute([$dado['serie_id']]);
-            $serie = $stmt->fetch();
+    //         $stmt = $this->db->prepare("SELECT * FROM serie WHERE id = ?");
+    //         $stmt->execute([$dado['serie_id']]);
+    //         $serie = $stmt->fetch();
 
-            $serieAlugado = new SerieAlugado(
-                    $serie['id'], // ID DO SERIE
-                    $dado['data_aluguel'],
-                    $dado['expira_em'],
-                    $dado['preco_pago'],
-                    $dado['usuario_id']
-                );
+    //         $serieAlugado = new SerieAlugado(
+    //                 $serie['id'], // ID DO SERIE
+    //                 $dado['data_aluguel'],
+    //                 $dado['expira_em'],
+    //                 $dado['preco_pago'],
+    //                 $dado['usuario_id']
+    //             );
 
-            $this->seriesAlugados[] = $serieAlugado;
-        }
-    }
+    //         $this->seriesAlugados[] = $serieAlugado;
+    //     }
+    // }
 
-    public function getSeriesAlugados(): array {
-        return $this->seriesAlugados;
-    }
+    // public function getSeriesAlugados(): array {
+    //     return $this->seriesAlugados;
+    // }
 
     // Insert
 
-    public function adicionarMidia(Midia $midia): bool {
+    public function adicionarMidia($midia): bool {
         $tipo = ($midia instanceof Filme) ? 'Filme' : 'Serie';
         $serieId = null;
         
@@ -195,6 +201,7 @@ class Streaming {
                 }
                 
                 return $result;
+                
             } elseif ($tipo == 'Serie') {
                 $stmt = $this->db->prepare("
                 INSERT INTO serie (titulo, imagem_path, sinopse, release_date, generos, preco, disponivel) 
@@ -211,8 +218,6 @@ class Streaming {
                     $midia->isDisponivel(),
                 ]);
 
-                if (!$resultSerie) return false;
-
                 $serieId = $this->db->lastInsertId();
 
                 $temporadas_Episodios = $midia->getTemporadasEpisodios();
@@ -223,7 +228,7 @@ class Streaming {
                     VALUES (?, ?)
                     ");
 
-                    $resultTemporada = $stmt->execute([
+                    $stmt->execute([
                         $serieId,
                         $temporada['numero']
                     ]);
@@ -232,12 +237,14 @@ class Streaming {
 
                     foreach ($temporada['episodios'] as $ep) {
                         $stmt = $this->db->prepare("
-                        INSERT INTO episodio (titulo, temporada_id	) 
-                        VALUES (?, ?)
+                        INSERT INTO episodio (titulo, number, serie_id,  temporada_id	) 
+                        VALUES (?, ?, ?, ?)
                         ");
 
-                        $resultEpisodio = $stmt->execute([
+                        $stmt->execute([
                             $ep['titulo'],
+                            $ep['numero'],
+                            $serieId,
                             $temporadaId
                         ]);
                     }   
@@ -249,81 +256,101 @@ class Streaming {
                     $this->series[] = $midia;
                 }
                 
-                return $result;
+                return $resultSerie;
             } else {
                 return false;
             }
 
         } catch (\PDOException $e) {
-            error_log("Erro ao inserir mídia: " . $e->getMessage());
+            error_log("Erro no INSERT: " . $e->getMessage());
             return false;
         }
     }
 
-    public function deletarVeiculo(string $tipo, int $id): string {
+    public function deletarMidia(string $tipo, int $id): string {
         if ($tipo == 'Filme') {
-            foreach ($this->filmes as $filme) {
+            foreach ($this->filmes as $index => $filme) {
                 if ($filme->getId() == $id) {
-                    unset($this->filmes[$filme]);
+                    unset($this->filmes[$index]);
                     $this->filmes = array_values($this->filmes);
                 }
             }
 
+            
+            $stmt = $this->db->prepare("DELETE FROM filme WHERE id = ?");
+            if ($stmt->execute([$id])) {
+                return "Filmes removido com sucesso!";
+            }
+            
+
+        } elseif ($tipo == 'Serie'){
+            foreach ($this->series as $index => $serie) {
+                if ($serie->getId() == $id) {
+                    unset($this->series[$index]);
+                    $this->series = array_values($this->series);
+                }
+            }
+
             if ($id !== null) {
-                $stmt = $this->db->prepare("DELETE FROM filme WHERE id = ?");
+                // Deletar Temporada
+                $stmt = $this->db->prepare("DELETE FROM temporada WHERE serie_id = ?");
                 if ($stmt->execute([$id])) {
-                    return "Filmes '{$modelo}' removido com sucesso!";
+                    // Deletar Episodios
+                    $stmt = $this->db->prepare("DELETE FROM episodio WHERE serie_id = ?");
+                    if ($stmt->execute([$id])){
+                        // Deletar Serie
+                        $stmt = $this->db->prepare("DELETE FROM serie WHERE id = ?");
+                        $stmt->execute([$id]);
+                        if ($stmt->execute([$id])) {
+                            return "series  removido com sucesso!";
+                        }
+                    }
+                }
+                
+            }
+        } 
+
+        return "Midia não encontrada.";
+        
+        
+    }
+    public function prepararEdit(string $tipo, int $id) {
+        if ($tipo == 'Filme') {
+            foreach ($this->filmes as $filme) {
+                if ($filme->getId() == $id) {
+                    return $filme;
                 }
             }
 
         } elseif ($tipo == 'Serie'){
             foreach ($this->series as $serie) {
                 if ($serie->getId() == $id) {
-                    unset($this->series[$serie]);
-                    $this->series = array_values($this->series);
+                    return $serie;
                 }
             }
-
-            if ($id !== null) {
-                // Deletar serie
-                $stmt = $this->db->prepare("DELETE FROM serie WHERE id = ?");
-                if ($stmt->execute([$id])) {
-                    // Deletar temporadas
-                    $stmt = $this->db->prepare("DELETE FROM serie WHERE id = ?");
-                    if ($stmt->execute([$id])){
-                        // Deletar Episodios
-                        $stmt = $this->db->prepare("DELETE FROM serie WHERE id = ?");
-                        $stmt->execute([$id]);
-                        if ($stmt->execute([$id])) {
-                            return "series '{$modelo}' removido com sucesso!";
-                        }
-                    }
-                }
-                
-            }
-        } else {
-            return "Midia não encontrada.";
         }
+    }
 
+    public function editarMidia(midia $midia, $newPreco) {
+        $tipo = ($midia instanceof Filme) ? 'Filme' : 'Serie';
+        $id = $midia->getId();
 
-        foreach ($this->veiculos as $key => $veiculo) {
-            if ($veiculo->getModelo() === $modelo && $veiculo->getPlaca() === $placa) {
-                $id = $veiculo->getId();
-                unset($this->veiculos[$key]);
-                $this->veiculos = array_values($this->veiculos); // Reindexar array
-                break;
+        if ($tipo == 'Filme') {
+            $midia->setPreco($newPreco);
+
+            $stmt = $this->db->prepare("UPDATE filme SET preco = ? WHERE id = ?");
+            if ($stmt->execute([$newPreco, $id])) {
+                return "Preço alterado com sucesso!";
             }
-        }
-        
-        if ($id !== null) {
-            $stmt = $this->db->prepare("DELETE FROM veiculos WHERE id = ?");
-            if ($stmt->execute([$id])) {
-                return "Veículo '{$modelo}' removido com sucesso!";
+
+        } elseif ($tipo == 'Serie'){
+            $midia->setPreco($newPreco);
+
+            $stmt = $this->db->prepare("UPDATE serie SET preco = ? WHERE id = ?");
+            if ($stmt->execute([$newPreco, $id])) {
+                return "Preço alterado com sucesso!";
             }
-            return "Erro ao remover veículo do banco de dados.";
-        }
-        
-        return "Veículo não encontrado.";
+        } 
     }
 
 }

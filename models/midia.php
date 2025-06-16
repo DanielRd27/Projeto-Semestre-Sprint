@@ -4,13 +4,15 @@ abstract class Midia {
     protected string $titulo;
     protected string $imagem_path;
     protected string $sinopse;
-    protected int $release_date;
+    protected string $release_date;
+    protected string $tipo;
     protected string $generos;
     protected float $preco;
     protected bool $disponivel;
     protected ?int $id = null;
+    protected bool $carrinho = false;
     
-    public function __construct(string $titulo, string $imagem_path, string $sinopse, int $release_date, string $generos, float $preco, bool $disponivel, ?int $id = null, string $tipo) {
+    public function __construct(string $titulo, string $imagem_path, string $sinopse, int $release_date, string $generos, float $preco, bool $disponivel, string $tipo, ?int $id = null) {
         $this->titulo = $titulo;
         $this->imagem_path = $imagem_path;
         $this->sinopse = $sinopse;
@@ -20,6 +22,18 @@ abstract class Midia {
         $this->disponivel = $disponivel;
         $this->id = $id;
         $this->tipo = $tipo;
+    }
+
+    public function getCarrinho(): bool {
+        return $this->carrinho;
+    }
+
+    public function carrinhoOn(): void {
+        $this->carrinho = True;
+    }
+
+    public function carrinhoOff(): void {
+        $this->carrinho = False;
     }
 
     public function calcularAluguel(int $dias): float {
@@ -42,6 +56,11 @@ abstract class Midia {
         return $this->sinopse;
     }
 
+    public function getEncurtaSinopse() {
+        $sinopseResult = mb_strimwidth($this->sinopse, 0, 255, '...');
+        return $sinopseResult;
+    }
+
     public function getReleaseDate(): int {
         return $this->release_date;
     }
@@ -53,6 +72,10 @@ abstract class Midia {
 
     public function getPreco(): float {
         return $this->preco;
+    }
+
+    public function setPreco($newPreco): void {
+        $this->preco = $newPreco;
     }
 
     public function isDisponivel(): bool {
