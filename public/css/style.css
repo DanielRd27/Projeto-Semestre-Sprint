@@ -716,3 +716,8 @@ body {
     display: flex;
     justify-content: space-between;
 }
+
+.imgTable {
+    width: 200px;
+    height: auto;
+}

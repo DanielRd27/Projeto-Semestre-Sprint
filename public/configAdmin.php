@@ -4,14 +4,14 @@ require "../services/streamingServices.php";
 require "../services/tmdb.php";
 $streaming = new Streaming;
 $tmdb = new Tmdb;
-$teste = 0;
-$filmes = [];
 
 $apiKey = '72872d046ca2baa1e585a796cd99ccda';
-$resultados = [];
+$filmes = $streaming->getFilmes();
+$series = $streaming->getSeries();
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['busca']) && !empty(trim($_GET['busca']))) {
+        $resultados = [];
         $query = urlencode($_GET['busca']);
         $resultados = $tmdb->pesquisar($query);
     }
@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $newFilme = $tmdb->criarMidia($_POST['id']);
         $streaming->adicionarMidia($newFilme);
         
-        $filmes[] = $streaming->getFilmes();
+        
     }
 }
 ?>
@@ -137,18 +137,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                 <th>Duração (min)</th>
                                 <th>Preço (R$)</th>
                                 <th>Disponível</th>
+                                <th>Ações</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($filmes as $filme): ?>
                                 <tr>
-                                    <td><img src="<?= $filme->getImagemPath() ?>"></td>
-                                    <td><?= $filme->getId() ?></td>
+                                    <td><img class="imgTable" src="<?= $filme->getImagemPath() ?>"></td>
+                                    <td><?= $filme->getDuracaoMinutos() ?></td>
                                     <td><?= htmlspecialchars($filme->getTitulo()) ?></td>
                                     <td><?= htmlspecialchars($filme->getSinopse()) ?></td>
                                     <td><?= $filme->getReleaseDate() ?></td>
                                     <td><?= htmlspecialchars($filme->getGeneros()) ?></td>
-                                    <td><?= $filme->getDuracaoMinutos() ?></td>
+                                    <td><?= $filme->getId() ?></td>
                                     <td><?= number_format($filme->getPreco(), 2, ',', '.') ?></td>
                                     <td><?= $filme->isDisponivel() ? 'Sim' : 'Não' ?></td>
                                 </tr>
@@ -169,12 +170,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                 <th>Temporadas (Qtn)</th>
                                 <th>Preço (R$)</th>
                                 <th>Disponível</th>
+                                <th>Ações</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($streaming->getSeries() as $serie): ?>
+                            <?php foreach ($series as $serie): ?>
                                 <tr>
-                                    <td><?= $serie->getImagemPath() ?></td>
+                                    <td><img class="imgTable" src="<?= $serie->getImagemPath() ?>"></td>
                                     <td><?= $serie->getId() ?></td>
                                     <td><?= htmlspecialchars($serie->getTitulo()) ?></td>
                                     <td><?= htmlspecialchars($serie->getSinopse()) ?></td>
