@@ -748,7 +748,14 @@ body {
     display: flex;
 }
 
+.itensCarrinhos {
+    width: 100%;
+}
+
 .infosFilmeCarrinho {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
     width: 100%;
     padding: 0.5rem 1rem;
 }
@@ -802,4 +809,24 @@ body {
     color: white;
     width: 100%;
     background-color: #000000;
+}
+
+.filmeDisponivel{
+    margin-bottom: 0.5rem;
+}
+
+.dias select {
+    padding: 0.5rem ;
+    width: 100%;
+}
+.inputs {
+    display: flex;
+    justify-content: space-between;
+}
+
+.itemCarrinho button {
+    border: none;
+    background-color: #D9D9D9;
+    margin-bottom: 0;
+    padding-bottom: 0 !important;
 }
