@@ -10,7 +10,7 @@ abstract class Midia {
     protected bool $disponivel;
     protected ?int $id = null;
     
-    public function __construct(string $titulo, string $imagem_path, string $sinopse, int $release_date, string $generos, float $preco, bool $disponivel, ?int $id = null) {
+    public function __construct(string $titulo, string $imagem_path, string $sinopse, int $release_date, string $generos, float $preco, bool $disponivel, ?int $id = null, string $tipo) {
         $this->titulo = $titulo;
         $this->imagem_path = $imagem_path;
         $this->sinopse = $sinopse;
@@ -19,10 +19,15 @@ abstract class Midia {
         $this->preco = $preco;
         $this->disponivel = $disponivel;
         $this->id = $id;
+        $this->tipo = $tipo;
     }
 
     public function calcularAluguel(int $dias): float {
         return $this->preco * $dias;
+    }
+
+    public function getTipo(): string {
+        return $this->tipo;
     }
 
     public function getTitulo(): string {

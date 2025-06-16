@@ -37,6 +37,7 @@ class Streaming {
         $this->filmes = []; // Limpa a lista antes de carregar
         
         foreach ($filmeDb as $dado) {
+            
             $filme = new Filme(
                     $dado['titulo'], 
                     $dado['imagem_path'], 
@@ -45,8 +46,9 @@ class Streaming {
                     $dado['generos'], 
                     $dado['preco'], 
                     (bool)$dado['disponivel'],
+                    $dado['duracao_minutos'],
+                    'Filme',
                     $dado['id'],
-                    $dado['duracao_minutos']
                 );
 
             $this->filmes[] = $filme;
@@ -82,6 +84,7 @@ class Streaming {
                 ];
             }
 
+     
             $serie = new Serie(
 
                     $dado['titulo'], 
@@ -91,8 +94,9 @@ class Streaming {
                     $dado['generos'], 
                     $dado['preco'], 
                     (bool)$dado['disponivel'],
+                    $temporadas_Episodios,
+                    'Serie',
                     $dado['id'],
-                    $temporadas_Episodios
                 );
 
             $this->series[] = $serie;
@@ -128,6 +132,10 @@ class Streaming {
         }
     }
 
+    public function getFilmesAlugados(): array {
+        return $this->filmesAlugados;
+    }
+
     public function carregarSeriesAlugados(): void{
         $stmt = $this->db->query("SELECT * FROM serie_alugados");
         $seriesAlugadosDb = $stmt->fetchAll();
@@ -150,6 +158,10 @@ class Streaming {
 
             $this->seriesAlugados[] = $serieAlugado;
         }
+    }
+
+    public function getSeriesAlugados(): array {
+        return $this->seriesAlugados;
     }
 
     // Insert
@@ -250,7 +262,48 @@ class Streaming {
         }
     }
 
-    
+    public function deletarVeiculo(string $tipo, int $id): string {
+        if ($tipo == 'Filme') {
+            foreach ($this->filmes as $filme) {
+                if ($filme->getId() == $id) {
+                    unset($this->filmes[$filme]);
+                    $this->filmes = array_values($this->filmes);
+                }
+            }
+
+            if ($id !== null) {
+                $stmt = $this->db->prepare("DELETE FROM filmes WHERE id = ?");
+                if ($stmt->execute([$id])) {
+                    return "Filmes '{$modelo}' removido com sucesso!";
+                }
+            }
+
+        } elseif ($tipo == 'Serie'){
+
+        } else {
+            return "Midia não encontrada.";
+        }
+
+
+        foreach ($this->veiculos as $key => $veiculo) {
+            if ($veiculo->getModelo() === $modelo && $veiculo->getPlaca() === $placa) {
+                $id = $veiculo->getId();
+                unset($this->veiculos[$key]);
+                $this->veiculos = array_values($this->veiculos); // Reindexar array
+                break;
+            }
+        }
+        
+        if ($id !== null) {
+            $stmt = $this->db->prepare("DELETE FROM veiculos WHERE id = ?");
+            if ($stmt->execute([$id])) {
+                return "Veículo '{$modelo}' removido com sucesso!";
+            }
+            return "Erro ao remover veículo do banco de dados.";
+        }
+        
+        return "Veículo não encontrado.";
+    }
 
 }
 

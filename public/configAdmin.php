@@ -19,8 +19,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_POST['adicionar'])) {
         $newFilme = $tmdb->criarMidia($_POST['id']);
         $streaming->adicionarMidia($newFilme);
-        
-        
+    } elseif (isset($_POST['deletar'])) {
+        $idToDelete = ($_POST['id'])
+        $tipoToDelete = ($_POST['tipo'])
+        $streaming->deletarVeiculo($tipoToDelete, $idToDelete);
     }
 }
 ?>
@@ -143,15 +145,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                         <tbody>
                             <?php foreach ($filmes as $filme): ?>
                                 <tr>
-                                    <td><img class="imgTable" src="<?= $filme->getImagemPath() ?>"></td>
-                                    <td><?= $filme->getDuracaoMinutos() ?></td>
-                                    <td><?= htmlspecialchars($filme->getTitulo()) ?></td>
-                                    <td><?= htmlspecialchars($filme->getSinopse()) ?></td>
-                                    <td><?= $filme->getReleaseDate() ?></td>
-                                    <td><?= htmlspecialchars($filme->getGeneros()) ?></td>
-                                    <td><?= $filme->getId() ?></td>
-                                    <td><?= number_format($filme->getPreco(), 2, ',', '.') ?></td>
-                                    <td><?= $filme->isDisponivel() ? 'Sim' : 'Não' ?></td>
+                                    <form method="post">
+                                        <td><img class="imgTable" src="<?= $filme->getImagemPath() ?>"></td>
+                                        <td><?= $filme->getId() ?></td>
+                                        <td><?= htmlspecialchars($filme->getTitulo()) ?></td>
+                                        <td><?= htmlspecialchars($filme->getSinopse()) ?></td>
+                                        <td><?= $filme->getReleaseDate() ?></td>
+                                        <td><?= htmlspecialchars($filme->getGeneros()) ?></td>
+                                        <td><?= $filme->getDuracaoMinutos() ?></td>
+                                        <td><?= number_format($filme->getPreco(), 2, ',', '.') ?></td>
+                                        <td><?= $filme->isDisponivel() ? 'Sim' : 'Não' ?></td>
+                                        <!-- Verificar -->
+                                        <td>
+                                            <button type="submit" name="deletar" class="btn btn-danger btn-sm delete-btn">
+                                                <input type="hidden" name="id" value="<?= $filme->getId() ?>">
+                                                <input type="hidden" name="tipo" value="<?= $filme->getTipo() ?>">
+                                                <input type="hidden" name="deletar" value="1"> <!-- para identificar no PHP  !-->
+                                                <i class="bi bi-trash me-1"></i>Deletar
+                                            </button>
+                                        </td>
+                                    </form>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -176,15 +189,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                         <tbody>
                             <?php foreach ($series as $serie): ?>
                                 <tr>
-                                    <td><img class="imgTable" src="<?= $serie->getImagemPath() ?>"></td>
-                                    <td><?= $serie->getId() ?></td>
-                                    <td><?= htmlspecialchars($serie->getTitulo()) ?></td>
-                                    <td><?= htmlspecialchars($serie->getSinopse()) ?></td>
-                                    <td><?= $serie->getReleaseDate() ?></td>
-                                    <td><?= htmlspecialchars($serie->getGeneros()) ?></td>
-                                    <td><?= count($serie->getTemporadasEpisodios()) ?></td>
-                                    <td><?= number_format($serie->getPreco(), 2, ',', '.') ?></td>
-                                    <td><?= $serie->isDisponivel() ? 'Sim' : 'Não' ?></td>
+                                    <form method="post">
+                                        <td><img class="imgTable" src="<?= $serie->getImagemPath() ?>"></td>
+                                        <td><?= $serie->getId() ?></td>
+                                        <td><?= htmlspecialchars($serie->getTitulo()) ?></td>
+                                        <td><?= htmlspecialchars($serie->getSinopse()) ?></td>
+                                        <td><?= $serie->getReleaseDate() ?></td>
+                                        <td><?= htmlspecialchars($serie->getGeneros()) ?></td>
+                                        <td><?= count($serie->getTemporadasEpisodios()) ?></td>
+                                        <td><?= number_format($serie->getPreco(), 2, ',', '.') ?></td>
+                                        <td><?= $serie->isDisponivel() ? 'Sim' : 'Não' ?></td>
+                                        <!-- Verificar -->
+                                        <td>
+                                            <button type="submit" name="deletar" class="btn btn-danger btn-sm delete-btn">
+                                                <input type="hidden" name="id" value="<?= $serie->getId() ?>">
+                                                <input type="hidden" name="tipo" value="<?= $serie->getTipo() ?>">
+                                                <input type="hidden" name="deletar" value="1"> <!-- para identificar no PHP  !-->
+                                                <i class="bi bi-trash me-1"></i>Deletar
+                                            </button>
+                                        </td>
+                                    </form>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
