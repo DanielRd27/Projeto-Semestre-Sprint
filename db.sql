@@ -45,8 +45,6 @@ CREATE TABLE IF NOT EXISTS filme (
 CREATE TABLE IF NOT EXISTS filme_alugados (
     id INT AUTO_INCREMENT PRIMARY KEY,
     data_aluguel DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    expira_em DATETIME NOT NULL,
-    preco_pago FLOAT NOT NULL,
     usuario_id INT NOT NULL,
     filme_id INT NOT NULL,
     FOREIGN KEY (usuario_id) REFERENCES usuario(id),
@@ -86,6 +84,6 @@ CREATE TABLE IF NOT EXISTS filme_alugados (
 -- Insere usuários padrão
 -- Nota: As senhas estão em formato hash, geradas com password_hash()
 -- admin123 e user123 são as senhas em texto puro
--- INSERT INTO usuario (username, password, perfil) VALUES 
---     ('admin', '$2y$10$4gAzJ/Kq4NFc.K3nXi.l0OQsRHxqZJ8/Z2MtMrjorJX66IvPZOOym', 'admin'),
---     ('usuario', '$2y$10$reDVMnCMBItvD.Ru13M/Heqn0K5C3t8cL7.jxvAfLk1xEFXbqB9HG', 'usuario');
+INSERT INTO usuario (username, password, perfil) VALUES 
+    ('admin', '$2y$10$4gAzJ/Kq4NFc.K3nXi.l0OQsRHxqZJ8/Z2MtMrjorJX66IvPZOOym', 'admin'),
+    ('usuario', '$2y$10$reDVMnCMBItvD.Ru13M/Heqn0K5C3t8cL7.jxvAfLk1xEFXbqB9HG', 'usuario');

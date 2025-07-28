@@ -10,15 +10,18 @@ class Auth {
     }
     
     public function login(string $username, string $password): bool {
-        $stmt = $this->db->prepare("SELECT * FROM usuarios WHERE username = ?");
+        $stmt = $this->db->prepare("SELECT * FROM usuario WHERE username = ?");
         $stmt->execute([$username]);
         $usuario = $stmt->fetch();
+
+        $id_user = $usuario['id'];
         
-        if ($usuario && password_verify($password, $usuario['password'])) {
+        if ($usuario['password'] == $password) {
             $_SESSION['auth'] = [
                 'logado' => true,
                 'username' => $username,
-                'perfil' => $usuario['perfil']
+                'perfil' => $usuario['perfil'],
+                'user_id' => $id_user
             ];
             return true;
         }
@@ -26,15 +29,14 @@ class Auth {
     }
 
     public function cadastrar(string $username, string $email,string $password): bool {
-        $stmt = $this->db->prepare("INSERT INTO usuario  (username, email, password, perfil, data_criacao) 
-                VALUES (?, ?, ?, ?, ?)");
+        $stmt = $this->db->prepare("INSERT INTO usuario  (username, email, password, perfil) 
+                VALUES (?, ?, ?, ?)");
                 
-        password_hash($password, PASSWORD_DEFAULT);
-
         $result = $stmt->execute([
                     $username,
                     $email,
                     $password,
+                    'User'
                 ]);
 
         return $result;

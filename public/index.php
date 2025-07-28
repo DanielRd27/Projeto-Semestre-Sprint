@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 require "../services/streamingServices.php";
 $streaming = new Streaming;
 $filmes = $streaming->getFilmes();
@@ -7,23 +9,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     
 
 } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['addCarrinho'])) {
-        $titulo = $_POST['titulo'];
+    if (isset($_POST['alugar'])) {
+        $id = $_POST['id'];
         $tipo = $_POST['tipo'];
         
-        if ($tipo = 'Filme'){
-            foreach ($filmes as $filme) {
-                if ($filme->$titulo = $titulo) {
-                    $filme->carrinhoOn();
-                }
-            }
-        } else {
-            foreach ($series as $serie) {
-                if ($serie->$titulo = $titulo) {
-                    $serie->carrinhoOn();
-                }
-            }
-        }
+        $streaming->alugarFilme(3, $_SESSION['auth']['user_id']);
+        header("Location: carrinho.php");
+        exit;
     } 
 }
 
@@ -67,10 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                     <!-- Itens do Menu Dropdown -->
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="carrinho.php">Carrinho <i class="bi bi-cart"></i></a></li>
                         <li><a class="dropdown-item" href="#">Meus filmes<i class="bi bi-film"></i></a></li>
                         <li><a class="dropdown-item text-primary" href="configAdmin.php">Configs Admin<i class="bi bi-building-gear"></i></i></a></li>
-                        <li><a class="dropdown-item text-primary" href="#">Configs Helper<i class="bi bi-building-gear"></i></i></a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item text-danger" href="#">Sair</a></li>
                     </ul>
@@ -120,9 +110,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                     <p class="sinopseHoverConteudo"><?= $filme->getEncurtaSinopse()?></p>
 
                                     <form method="post">
-                                        <input type="hidden" name="titulo" value="<?= $filme->getTitulo() ?>">
+                                        <input type="hidden" name="id" value="<?= $filme->getId() ?>">
                                         <input type="hidden" name="tipo" value="<?= $filme->getTipo() ?>">
-                                        <button type="submit" name="addCarrinho" class="buttonHover">Adicionar No Carrinho</button>
+                                        <button type="submit" name="alugar" class="buttonHover">Alugar Este Filme</button>
                                     </form>
                                 </div>
                             </div>

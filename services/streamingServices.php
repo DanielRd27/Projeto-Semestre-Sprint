@@ -16,12 +16,24 @@ class Streaming {
 
     private $db;
     private array $filmes = [];
-    private array $series = [];
+    private array $filmesAlugados = [];
 
     public function __construct () {
         $this->db = getConnection();
-        $this->carregarSeries();
         $this->carregarFilmes();  
+        $this->carregarFilmesAlugados();
+    }
+
+    public function carregarAlugados() {
+        foreach ($this->filmes as $filme) {
+            if (!$filme->isDisponivel) {
+                $this->filmesAlugados[] = $filme;
+            }
+        }
+    }
+
+    public function getAlugados() {
+        return $this->filmesAlugados;
     }
 
     public function carregarFilmes(): void{
@@ -53,94 +65,121 @@ class Streaming {
         return $this->filmes;
     }
 
-    public function carregarSeries(): void{
-        $stmt = $this->db->prepare("SELECT * FROM serie");
-        $serieDb = $stmt->fetchAll();
+    // public function carregarSeries(): void{
+    //     $stmt = $this->db->prepare("SELECT * FROM serie");
+    //     $serieDb = $stmt->fetchAll();
         
-        $this->series = []; // Limpa a lista antes de carregar
+    //     $this->series = []; // Limpa a lista antes de carregar
         
-        foreach ($serieDb as $dado) {
-            $temporadas_Episodios = []; // reinicia o array para cada série
+    //     foreach ($serieDb as $dado) {
+    //         $temporadas_Episodios = []; // reinicia o array para cada série
 
-            $stmt = $this->db->query("SELECT * FROM temporada WHERE serie_id = ?");
-            $stmt->execute([$dado['id']]);
-            $temporadas = $stmt->fetchAll();
+    //         $stmt = $this->db->query("SELECT * FROM temporada WHERE serie_id = ?");
+    //         $stmt->execute([$dado['id']]);
+    //         $temporadas = $stmt->fetchAll();
 
-            foreach ($temporadas as $temporada) {
-                $episodiosArry = [];
+    //         foreach ($temporadas as $temporada) {
+    //             $episodiosArry = [];
 
-                $stmt = $this->db->prepare("SELECT * FROM episodio WHERE temporada_id = ?");
-                $stmt->execute([$temporada['id']]);
-                $episodios = $stmt->fetchAll();
-                $episodiosArry[] = [
-                    'temp_id' => $episodios['temporada_id'],
-                    'serie_id' => $episodios['serie_id'],
-                    'numero' => $episodios['number'],
-                    'titulo' => $episodios['titulo']
-                ];
+    //             $stmt = $this->db->prepare("SELECT * FROM episodio WHERE temporada_id = ?");
+    //             $stmt->execute([$temporada['id']]);
+    //             $episodios = $stmt->fetchAll();
+    //             $episodiosArry[] = [
+    //                 'temp_id' => $episodios['temporada_id'],
+    //                 'serie_id' => $episodios['serie_id'],
+    //                 'numero' => $episodios['number'],
+    //                 'titulo' => $episodios['titulo']
+    //             ];
 
-                $temporadas_Episodios[] = [
-                    'id' => $temporada['id'],
-                    "numero" => $temporada['number'],
-                    "episodios" => $episodiosArry
-                ];
-            }
-     
-            $serie = new Serie(
-                    $dado['titulo'], 
-                    $dado['imagem_path'], 
-                    $dado['sinopse'], 
-                    $dado['release_date'], 
-                    $dado['generos'], 
-                    $dado['preco'], 
-                    (bool)$dado['disponivel'],
-                    $temporadas_Episodios,
-                    'Serie',
-                    $dado['id'],
-                );
-
-            $this->series[] = $serie;
-        }
-    }
-
-    public function getSeries(): array {
-        return $this->series;
-    }
-
-    // public function carregarFilmesAlugados(): void{
-    //     $stmt = $this->db->query("SELECT * FROM filme_alugados");
-    //     $filmesAlugadosDb = $stmt->fetchAll();
-        
-    //     $this->filmesAlugados = []; // Limpa a lista antes de carregar
-        
-    //     foreach ($filmesAlugadosDb as $dado) {
-
-    //         $stmt = $this->db->prepare("SELECT * FROM filme WHERE id = ?");
-    //         $stmt->execute([$dado['filme_id']]);
-    //         $filme = $stmt->fetch();
-
-    //         foreach ($this->filmes as $filmeObj) {
-    //             if ($filmeObj->getId() == $dado['filme_id']) {
-                    
-    //             }
+    //             $temporadas_Episodios[] = [
+    //                 'id' => $temporada['id'],
+    //                 "numero" => $temporada['number'],
+    //                 "episodios" => $episodiosArry
+    //             ];
     //         }
-
-    //         $filmeAlugado = new FilmeAlugado(
-    //                 $filme['id'], // ID DO FILME
-    //                 $filme['duracao_minutos'],
-    //                 $dado['data_aluguel'],
-    //                 $dado['expira_em'],
-    //                 $dado['preco_pago'],
-    //                 $dado['usuario_id']
+     
+    //         $serie = new Serie(
+    //                 $dado['titulo'], 
+    //                 $dado['imagem_path'], 
+    //                 $dado['sinopse'], 
+    //                 $dado['release_date'], 
+    //                 $dado['generos'], 
+    //                 $dado['preco'], 
+    //                 (bool)$dado['disponivel'],
+    //                 $temporadas_Episodios,
+    //                 'Serie',
+    //                 $dado['id'],
     //             );
 
-    //         $this->filmesAlugados[] = $filmeAlugado;
+    //         $this->series[] = $serie;
     //     }
     // }
 
-    // public function getFilmesAlugados(): array {
-    //     return $this->filmesAlugados;
+    // public function getSeries(): array {
+    //     return $this->series;
     // }
+
+    
+    
+    public function alugarFilme($id, $user_id) {
+        foreach ($this->filmes as $filme) {
+            if ($filme->getId() == $id) {
+                $stmt = $this->db->prepare("
+                    INSERT INTO filme_alugados (usuario_id, filme_id) 
+                    VALUES (?, ?)
+                ");
+                
+                if ($stmt->execute([
+                    $user_id,
+                    $filme->getId()
+                ])) {
+                    $this->filmesAlugados[] = $filme;
+                }
+            }
+        }
+
+        // Filme não encontrado
+        return false;
+    }
+
+    public function carregarFilmesAlugados(): void{
+        $stmt = $this->db->query("SELECT * FROM filme_alugados");
+        $filmesAlugadosDb = $stmt->fetchAll();
+        
+        $this->filmesAlugados = []; // Limpa a lista antes de carregar
+        
+        foreach ($filmesAlugadosDb as $dado) {
+
+            $stmt = $this->db->prepare("SELECT * FROM filme WHERE id = ?");
+            $stmt->execute([$dado['filme_id']]);
+            $filme = $stmt->fetch();
+
+            foreach ($this->filmes as $filme) {
+                if ($filme->getId() == $dado['filme_id']) {
+
+                $filmeAlugado = new FilmeAlugado(
+                    $filme['titulo'], 
+                    $filme['imagem_path'], 
+                    $filme['sinopse'], 
+                    $filme['release_date'], 
+                    $filme['generos'], 
+                    $filme['preco'], 
+                    (bool)$filme['disponivel'],
+                    $filme['duracao_minutos'],
+                    $dado['usuario_id'],
+                    'Filme',
+                    $filme['id'],
+                );
+                }
+            }
+
+            $this->filmesAlugados[] = $filmeAlugado;
+        }
+    }
+
+    public function getFilmesAlugados(): array {
+        return $this->filmesAlugados;
+    }
 
     // public function carregarSeriesAlugados(): void{
     //     $stmt = $this->db->query("SELECT * FROM serie_alugados");
@@ -202,64 +241,66 @@ class Streaming {
                 
                 return $result;
                 
-            } elseif ($tipo == 'Serie') {
-                $stmt = $this->db->prepare("
-                INSERT INTO serie (titulo, imagem_path, sinopse, release_date, generos, preco, disponivel) 
-                VALUES (?, ?, ?, ?, ?, ?, ?)
-                ");
+            } //elseif ($tipo == 'Serie') {
+            //     $stmt = $this->db->prepare("
+            //     INSERT INTO serie (titulo, imagem_path, sinopse, release_date, generos, preco, disponivel) 
+            //     VALUES (?, ?, ?, ?, ?, ?, ?)
+            //     ");
                 
-                $resultSerie = $stmt->execute([
-                    $midia->getTitulo(),
-                    $midia->getImagemPath(),
-                    $midia->getSinopse(),
-                    $midia->getReleaseDate(),
-                    $midia->getGeneros(),
-                    $midia->getPreco(),
-                    $midia->isDisponivel(),
-                ]);
+            //     $resultSerie = $stmt->execute([
+            //         $midia->getTitulo(),
+            //         $midia->getImagemPath(),
+            //         $midia->getSinopse(),
+            //         $midia->getReleaseDate(),
+            //         $midia->getGeneros(),
+            //         $midia->getPreco(),
+            //         $midia->isDisponivel(),
+            //     ]);
 
-                $serieId = $this->db->lastInsertId();
+            //     $serieId = $this->db->lastInsertId();
 
-                $temporadas_Episodios = $midia->getTemporadasEpisodios();
+            //     $temporadas_Episodios = $midia->getTemporadasEpisodios();
 
-                foreach ($temporadas_Episodios as $temporada) {
-                    $stmt = $this->db->prepare("
-                    INSERT INTO temporada (serie_id, number) 
-                    VALUES (?, ?)
-                    ");
+            //     foreach ($temporadas_Episodios as $temporada) {
+            //         $stmt = $this->db->prepare("
+            //         INSERT INTO temporada (serie_id, number) 
+            //         VALUES (?, ?)
+            //         ");
 
-                    $stmt->execute([
-                        $serieId,
-                        $temporada['numero']
-                    ]);
+            //         $stmt->execute([
+            //             $serieId,
+            //             $temporada['numero']
+            //         ]);
 
-                    $temporadaId = $this->db->lastInsertId();
+            //         $temporadaId = $this->db->lastInsertId();
 
-                    foreach ($temporada['episodios'] as $ep) {
-                        $stmt = $this->db->prepare("
-                        INSERT INTO episodio (titulo, number, serie_id,  temporada_id	) 
-                        VALUES (?, ?, ?, ?)
-                        ");
+            //         foreach ($temporada['episodios'] as $ep) {
+            //             $stmt = $this->db->prepare("
+            //             INSERT INTO episodio (titulo, number, serie_id,  temporada_id	) 
+            //             VALUES (?, ?, ?, ?)
+            //             ");
 
-                        $stmt->execute([
-                            $ep['titulo'],
-                            $ep['numero'],
-                            $serieId,
-                            $temporadaId
-                        ]);
-                    }   
-                }
+            //             $stmt->execute([
+            //                 $ep['titulo'],
+            //                 $ep['numero'],
+            //                 $serieId,
+            //                 $temporadaId
+            //             ]);
+            //         }   
+            //     }
                 
-                if ($resultSerie) {
-                    // Define o ID gerado no objeto
-                    $midia->setId($serieId);
-                    $this->series[] = $midia;
-                }
+            //     if ($resultSerie) {
+            //         // Define o ID gerado no objeto
+            //         $midia->setId($serieId);
+            //         $this->series[] = $midia;
+            //     }
                 
-                return $resultSerie;
-            } else {
-                return false;
-            }
+            //     return $resultSerie;
+            // } else {
+            //     return false;
+            // }
+
+            return false;
 
         } catch (\PDOException $e) {
             error_log("Erro no INSERT: " . $e->getMessage());
@@ -283,32 +324,32 @@ class Streaming {
             }
             
 
-        } elseif ($tipo == 'Serie'){
-            foreach ($this->series as $index => $serie) {
-                if ($serie->getId() == $id) {
-                    unset($this->series[$index]);
-                    $this->series = array_values($this->series);
-                }
-            }
+        } // elseif ($tipo == 'Serie'){
+        //     foreach ($this->series as $index => $serie) {
+        //         if ($serie->getId() == $id) {
+        //             unset($this->series[$index]);
+        //             $this->series = array_values($this->series);
+        //         }
+        //     }
 
-            if ($id !== null) {
-                // Deletar Temporada
-                $stmt = $this->db->prepare("DELETE FROM temporada WHERE serie_id = ?");
-                if ($stmt->execute([$id])) {
-                    // Deletar Episodios
-                    $stmt = $this->db->prepare("DELETE FROM episodio WHERE serie_id = ?");
-                    if ($stmt->execute([$id])){
-                        // Deletar Serie
-                        $stmt = $this->db->prepare("DELETE FROM serie WHERE id = ?");
-                        $stmt->execute([$id]);
-                        if ($stmt->execute([$id])) {
-                            return "series  removido com sucesso!";
-                        }
-                    }
-                }
+        //     if ($id !== null) {
+        //         // Deletar Temporada
+        //         $stmt = $this->db->prepare("DELETE FROM temporada WHERE serie_id = ?");
+        //         if ($stmt->execute([$id])) {
+        //             // Deletar Episodios
+        //             $stmt = $this->db->prepare("DELETE FROM episodio WHERE serie_id = ?");
+        //             if ($stmt->execute([$id])){
+        //                 // Deletar Serie
+        //                 $stmt = $this->db->prepare("DELETE FROM serie WHERE id = ?");
+        //                 $stmt->execute([$id]);
+        //                 if ($stmt->execute([$id])) {
+        //                     return "series  removido com sucesso!";
+        //                 }
+        //             }
+        //         }
                 
-            }
-        } 
+        //     }
+        // } 
 
         return "Midia não encontrada.";
         
@@ -322,13 +363,13 @@ class Streaming {
                 }
             }
 
-        } elseif ($tipo == 'Serie'){
-            foreach ($this->series as $serie) {
-                if ($serie->getId() == $id) {
-                    return $serie;
-                }
-            }
-        }
+        } // elseif ($tipo == 'Serie'){
+        //     foreach ($this->series as $serie) {
+        //         if ($serie->getId() == $id) {
+        //             return $serie;
+        //         }
+        //     }
+        // }
     }
 
     public function editarMidia(midia $midia, $newPreco) {

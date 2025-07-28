@@ -12,14 +12,25 @@ if (Auth::verificarLogin()) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'] ?? '';
-    $password = $_POST['password'] ?? '';
-    
-    if ($auth->login($username, $password)) {
-        header('Location: ../index.php');
-        exit;
-    } else {
-        $mensagem = 'Usuário ou senha inválidos';
+    if (isset($_POST['cadastro'])) {
+        $username = $_POST['username'] ?? '';
+        $email = $_POST['email'] ?? '';
+        $password = $_POST['password'] ?? '';
+        if ($auth->cadastrar($username, $email ,$password)) {
+            header('Location: ../public/login.php');
+            exit;
+        }
+        
+    } elseif (isset($_POST['login'])) {
+        $username = $_POST['username'] ?? '';
+        $password = $_POST['password'] ?? '';
+        
+        if ($auth->login($username, $password)) {
+            header('Location: ../public/index.php');
+            exit;
+        } else {
+            $mensagem = 'Usuário ou senha inválidos';
+        }
     }
 }
 ?>
@@ -68,6 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                         <!-- Formulário -->
                         <form method="post" class="d-flex flex-column">
+                            <input type="hidden" name="cadastro" value='1'?>">
                             <!-- Input usuario -->
                             <div class="input-container">
                                 <label for="user">Usuário</label>
@@ -108,15 +120,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                         <!-- Formulário -->
                         <form method="post" class="d-flex flex-column">
+                            <input type="hidden" name="login" value='1'?>
                             <!-- Input email -->
                             <div class="input-container">
                                 <label for="user">Usuário</label>
-                                <input type="text" name="user" class="input custom-input-loginAndRegister" id="user_input_login" required>
+                                <input type="text" name="username" class="input custom-input-loginAndRegister" id="user_input_login" required>
                             </div>
                             <!-- Input senha -->
                             <div class="input-container">
                                 <label for="senha">Senha</label>
-                                <input type="password" name="senha" class="input custom-input-loginAndRegister" id="password_input_login" required>
+                                <input type="password" name="password" class="input custom-input-loginAndRegister" id="password_input_login" required>
                             </div>
 
                             <a href="#">Ainda não tem conta?</a>
@@ -138,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
     <!-- Srcipt bootstrap -->
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
-     <script src="js/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>
